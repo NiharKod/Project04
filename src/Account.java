@@ -171,9 +171,11 @@ public class Account {
                 // TODO: Setup Seller/Customer role selector code
                 do {
                     System.out.println("Are you a Seller [1] or Customer [2]?:");
-                    setRole(scan.nextLine());
+                    int option = scan.nextInt();
+
+                    setRole((option == 1) ? "Seller" : (option == 2) ? "Customer" : "");
                     try {
-                        roleChoice = Integer.parseInt(getRole());
+                        roleChoice = option;
                         if (roleChoice != 1 && roleChoice != 2) {
                             System.out.println("Invalid Input, please enter 1 or 2\n");
                         } else {
@@ -203,7 +205,7 @@ public class Account {
             // Add new account info to accounts.txt
             FileOutputStream fos = new FileOutputStream("accounts.txt", true);
             PrintWriter pw = new PrintWriter(fos);
-            pw.println(getUsername() + "," + getEmail() + "," + getPassword());
+            pw.printf("%s,%s,%s,%s", getUsername(), getEmail(), getPassword(), "Customer");
             pw.close();
         }
 
@@ -239,12 +241,11 @@ public class Account {
         return false;
     }
 
-    public void editAccount() {
 
-    }
 
-    public void deleteAccount() {
 
+    public String toString() {
+        return String.format("%s-%s-%s-%s", username, email, password, role);
     }
 
 //    public Account login() {

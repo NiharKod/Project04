@@ -1,3 +1,5 @@
 Username,Email,Password,Role
 JohnDoe,jdoe@gmail.com,Password123,Seller
 FaeKname,fkname@yahoo.com,Uncrackable22,Customer
+niharkod,nihar@gmail.com,nkodkani04,Customer
+newUSER,new@gmail.com,fancybook312,
