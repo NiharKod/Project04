@@ -5,7 +5,7 @@ public class Main {
         try {
             Account user = new Account();
             user = user.accountAccess();
-            System.out.println(user);
+            //System.out.println(user);
         } catch(IOException e){
             e.printStackTrace();
         }
