@@ -18,9 +18,6 @@ public class Message {
         }
     }
 
-    public static void viewList(){
-        for(int i = 0; i < )
-    }
 
 
 }
