@@ -8,14 +8,6 @@ public class Main {
             //System.out.println(user);
 
 
-            //output the info depending on the user
-
-
-
-
-
-
-
         } catch(IOException e){
             e.printStackTrace();
         }

@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Account {
@@ -6,6 +7,10 @@ public class Account {
     private String email;
     private String password;
     private String role;
+
+    ArrayList<String> customers = new ArrayList<>();
+    ArrayList<String> stores = new ArrayList<>();
+    ArrayList<String> sellers = new ArrayList<>();
 
 
     // Constructors
@@ -240,6 +245,42 @@ public class Account {
         bfr.close();
         return false;
     }
+
+    public ArrayList<String> getCustomerList() throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader("accounts.txt"));
+        String line = "";
+        while ((line = br.readLine()) != null) {
+            if (line.split(",")[3].equals("Customer")) {
+                customers.add(line.split(",")[0]);
+            }
+        }
+        return customers;
+    }
+
+    public ArrayList<String> getSellers() throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader("accounts.txt"));
+        String line = "";
+        while ((line = br.readLine()) != null) {
+            if (line.split(",")[3].equals("Seller")) {
+                sellers.add(line.split(",")[0]);
+            }
+        }
+        return sellers;
+    }
+
+    public ArrayList<String> getStores() throws IOException {
+        for (String seller : getSellers()) {
+            if (new File(seller + ".txt").exists()) {
+                BufferedReader br = new BufferedReader(new FileReader(seller + ".txt"));
+                String line = "";
+                while ((line = br.readLine()) != null) {
+                    sellers.add(line);
+                }
+            }
+        }
+        return stores;
+    }
+
 
     public String toString() {
         return String.format("%s-%s-%s-%s", username, email, password, role);
