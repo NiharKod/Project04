@@ -1,9 +1,11 @@
+import java.awt.print.PrinterAbortException;
 import java.io.*;
 
 public class Message {
     private Account from;
     private Account to;
-    PrintWriter pw;
+    PrintWriter pwTo;
+    PrintWriter pwFrom;
     BufferedReader br;
 
     public Message(Account from, String to) throws CantMessageException, IOException {
@@ -22,14 +24,20 @@ public class Message {
         }
         //creating the file for messaging ot finding it if it is there already.
         this.from = from;
-        PrintWriter pw = new PrintWriter(new FileOutputStream(from.getUsername() + "-"
+        //create the to file if its not there already.
+
+        pwTo = new PrintWriter(new FileOutputStream(from.getUsername() + "-"
                 + this.to.getUsername() + ".txt", true));
+        //create the from file if it is not there already;
+
+        pwFrom = new PrintWriter(new FileOutputStream(this.to.getUsername() + "-"
+                + from.getUsername() + ".txt", true));
     }
 
     public void sendMessage(String message) {
-        pw.printf("(%s)%s: %s", to.getRole(), to.getUsername(), message);
+        pwFrom.printf("(%s)%s: %s", to.getRole(), to.getUsername(), message);
+        pwTo.printf("(%s)%s: %s", to.getRole(), to.getUsername(), message);
     }
-
 
     public void printMessageHistory() throws IOException {
         BufferedReader br = new BufferedReader(new FileReader("accounts.txt"));
