@@ -241,9 +241,6 @@ public class Account {
         return false;
     }
 
-
-
-
     public String toString() {
         return String.format("%s-%s-%s-%s", username, email, password, role);
     }
