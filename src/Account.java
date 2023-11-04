@@ -254,6 +254,7 @@ public class Account {
                 customers.add(line.split(",")[0]);
             }
         }
+        br.close();
         return customers;
     }
 
@@ -265,6 +266,7 @@ public class Account {
                 sellers.add(line.split(",")[0]);
             }
         }
+        br.close();
         return sellers;
     }
 
@@ -274,8 +276,9 @@ public class Account {
                 BufferedReader br = new BufferedReader(new FileReader(seller + ".txt"));
                 String line = "";
                 while ((line = br.readLine()) != null) {
-                    sellers.add(line);
+                    stores.add(line + "," + seller);
                 }
+                br.close();
             }
         }
         return stores;

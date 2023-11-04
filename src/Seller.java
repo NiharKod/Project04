@@ -34,7 +34,9 @@ public class Seller extends Account {
         //append the file with each line being the store in the list;
         for (String s : stores) {
             pw.println(s);
+            pw.flush();
         }
+        pw.close();
     }
 
     public void viewCustomers() {
