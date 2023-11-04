@@ -36,7 +36,10 @@ public class Message {
 
     public void sendMessage(String message) {
         pwFrom.printf("(%s)%s: %s", to.getRole(), to.getUsername(), message);
+        pwFrom.flush();
         pwTo.printf("(%s)%s: %s", to.getRole(), to.getUsername(), message);
+        pwTo.flush();
+
     }
 
     public void printMessageHistory() throws IOException {
