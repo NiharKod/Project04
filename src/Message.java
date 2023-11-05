@@ -3,7 +3,7 @@ import java.io.*;
 
 public class Message {
     private Account from;
-    private Account to;
+    private Account to = new Account();
     PrintWriter pwTo;
     PrintWriter pwFrom;
     BufferedReader br;
@@ -14,13 +14,14 @@ public class Message {
         //finding the user account and assigning it to the to.
         while ((line = br.readLine()) != null) {
             if (line.split(",")[0].equals(to) && !line.split(",")[3].equals(from.getRole())) {
-                this.to.setEmail(line.split(",")[0]);
-                this.to.setUsername(line.split(",")[1]);
+                this.to.setEmail(line.split(",")[1]);
+                this.to.setUsername(line.split(",")[0]);
                 this.to.setPassword(line.split(",")[2]);
                 this.to.setRole(line.split(",")[3]);
-            } else {
-                throw new CantMessageException(from.getRole());
             }
+        }
+        if (this.to == null) {
+            throw new CantMessageException(from.getRole());
         }
         //creating the file for messaging ot finding it if it is there already.
         this.from = from;
@@ -34,16 +35,17 @@ public class Message {
                 + from.getUsername() + ".txt", true));
     }
 
-    public void sendMessage(String message) {
-        pwFrom.printf("(%s)%s: %s", to.getRole(), to.getUsername(), message);
+    public void sendMessage(String message) throws IOException {
+        pwFrom.printf("(%s)%s: %s\n", from.getRole(), from.getUsername(), message);
         pwFrom.flush();
-        pwTo.printf("(%s)%s: %s", to.getRole(), to.getUsername(), message);
+        pwTo.printf("(%s)%s: %s\n", from.getRole(), from.getUsername(), message);
         pwTo.flush();
-
+        printMessageHistory();
     }
 
     public void printMessageHistory() throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader("accounts.txt"));
+        BufferedReader br = new BufferedReader(new FileReader(from.getUsername() + "-"
+                + this.to.getUsername() + ".txt"));
         String line;
         //finding the user account and assigning it to the to.
         while ((line = br.readLine()) != null) {
