@@ -9,6 +9,7 @@ public class Seller extends Account {
     PrintWriter pw;
     BufferedReader br;
 
+    // Constructors
     public Seller(String username, String email, String password, String role) throws IOException {
         super(username, email, password, role);
         //grab store information from file
@@ -43,16 +44,45 @@ public class Seller extends Account {
         }
     }
 
-    public boolean createStore(String sName) throws IOException {
-        if (!checkStores(sName)) {
-            String newLine = super.getUsername();
-            for (String s : stores) {
-                newLine += ("," + s);
-            }
-            newLine+= sName;
-            pw = new PrintWriter(new BufferedWriter(new FileWriter("storemanager.txt")));
-            br = new BufferedReader(new FileReader("storemanager.txt"));
+    // Create store
+    public boolean createStore(String storeName) throws IOException {
+        if (!checkStores(storeName)) {
+            File f = new File("storemanager.txt");
+            ArrayList<ArrayList<String>> storeManager = new ArrayList<>();
 
+            // Read through storemanager.txt to convert information to a 2D arrayList called storeManager
+            br = new BufferedReader(new FileReader(f));
+            String line = br.readLine();
+            while (line != null) {
+                String[] row = line.split(",");
+                ArrayList<String> sellerInfo = new ArrayList<>();
+
+                for (int i = 0; i < row.length; i++) {
+                    sellerInfo.add(row[i]);
+                }
+
+                storeManager.add(sellerInfo);
+                line = br.readLine();
+            }
+            br.close();
+
+            // Find user in storeManager and add storeName to their information
+            for (int i = 0; i < storeManager.size(); i++) {
+                if (storeManager.get(i).get(0).equals(getUsername())) {
+                    storeManager.get(i).add(storeName);
+                }
+            }
+
+            // Write storeManager to new storemanager.txt
+            pw = new PrintWriter(new BufferedWriter(new FileWriter("storemanager.txt")));
+            for (int i = 0; i < storeManager.size(); i++) {
+                String row = getUsername();
+                for (int k = 1; k < storeManager.get(i).size(); k++) {
+                    row += "," + storeManager.get(i).get(k);
+                }
+                pw.println(row);
+            }
+            return true;
         } else {
             return false;
         }
