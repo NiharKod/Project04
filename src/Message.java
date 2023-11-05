@@ -7,7 +7,7 @@ public class Message {
     PrintWriter pwTo;
     PrintWriter pwFrom;
     BufferedReader br;
-
+    
     public Message(Account from, String to) throws CantMessageException, IOException {
         BufferedReader br = new BufferedReader(new FileReader("accounts.txt"));
         String line;

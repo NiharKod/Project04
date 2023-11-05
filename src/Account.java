@@ -296,19 +296,7 @@ public class Account {
     }
 
     // Creates an arrayList of stores
-    public ArrayList<String> getStores() throws IOException {
-        for (String seller : getSellers()) {
-            if (new File(seller + ".txt").exists()) {
-                BufferedReader br = new BufferedReader(new FileReader(seller + ".txt"));
-                String line = "";
-                while ((line = br.readLine()) != null) {
-                    stores.add(line + "," + seller);
-                }
-                br.close();
-            }
-        }
-        return stores;
-    }
+
 
 
     public String toString() {

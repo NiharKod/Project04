@@ -4,54 +4,55 @@ import java.util.ArrayList;
 public class Seller extends Account {
 
     ArrayList<String> stores = new ArrayList<>();
+
+    public static ArrayList<String> allStores = new ArrayList<>();
     PrintWriter pw;
     BufferedReader br;
-    File f;
 
     public Seller(String username, String email, String password, String role) throws IOException {
         super(username, email, password, role);
         //grab store information from file
-        f = new File(super.getUsername() + ".txt");
-        pw = new PrintWriter(new BufferedWriter(new FileWriter(super.getUsername() + ".txt")));
-        br = new BufferedReader(new FileReader(super.getUsername() + ".txt"));
+        pw = new PrintWriter(new BufferedWriter(new FileWriter("storemanager.txt")));
+        br = new BufferedReader(new FileReader("storemanager.txt"));
+
         String line = "";
         while ((line = br.readLine()) != null) {
-            stores.add(line);
+            if (line.contains(super.getUsername())) {
+                for (String s : line.split(",")) {
+                    stores.add(s);
+                }
+                sellers.remove(0);
+                break;
+            }
         }
     }
 
     public Seller(Account account) throws IOException {
         super(account);
-        f = new File(super.getUsername() + ".txt");
-        pw = new PrintWriter(new BufferedWriter(new FileWriter(super.getUsername() + ".txt")));
-        br = new BufferedReader(new FileReader(super.getUsername() + ".txt"));
+        pw = new PrintWriter(new BufferedWriter(new FileWriter("storemanager.txt")));
+        br = new BufferedReader(new FileReader("storemanager.txt"));
         String line = "";
         while ((line = br.readLine()) != null) {
-            stores.add(line);
+            if (line.contains(super.getUsername())) {
+                for (String s : line.split(",")) {
+                    stores.add(s);
+                }
+                sellers.remove(0);
+                break;
+            }
         }
     }
 
     public boolean createStore(String sName) throws IOException {
-        boolean storeFound = checkStores(sName);
-
-        if (!storeFound) {    // If checkStore does not find store in list
-            //add to list of stores
-            stores.add(sName);
-            //delete the file;
-            f.delete();
-            //remake the file;
-            pw = new PrintWriter(new BufferedWriter(new FileWriter(super.getUsername() + ".txt")));
-            //append the file with each line being the store in the list;
+        if (!checkStores(sName)) {
+            String newLine = super.getUsername();
             for (String s : stores) {
-                pw.println(s);
-                pw.flush();
+                newLine += ("," + s);
             }
-            pw.close();
+            newLine+= sName;
+            pw = new PrintWriter(new BufferedWriter(new FileWriter("storemanager.txt")));
+            br = new BufferedReader(new FileReader("storemanager.txt"));
 
-            PrintWriter pwStores = new PrintWriter(new FileWriter("stores.txt"));
-            pwStores.println(sName);
-            pwStores.close();
-            return true;
         } else {
             return false;
         }
@@ -66,16 +67,18 @@ public class Seller extends Account {
     }
 
     public boolean checkStores(String storeName) throws IOException {
-        BufferedReader bfrStores = new BufferedReader(new FileReader(new File("stores.txt")));
-        String line = bfrStores.readLine();
+        return allStores.contains(storeName);
+    }
 
-        while (line != null) {
-            if (line.equals(storeName)) {
-                return true;
+    public ArrayList<String> getStores() throws IOException {
+        br = new BufferedReader(new FileReader("storemanager.txt"));
+        String line;
+        while ((line = br.readLine()) != null) {
+            for (int i = 1; i < line.split(",").length; i++) {
+                allStores.add(line.split(",")[i]);
             }
-            line = bfrStores.readLine();
         }
-        return false;
+        return allStores;
     }
 
 
