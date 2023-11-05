@@ -21,6 +21,13 @@ public class Account {
         this.role = role;
     }
 
+    public Account(Account account) {
+        this.username = account.username;
+        this.email = account.email;
+        this.password = account.password;
+        this.role = account.role;
+    }
+
     public Account() {
         this.username = null;
         this.email = null;
@@ -71,7 +78,7 @@ public class Account {
         int accountChoice;
 
         do {    // Gets user's choice to log in to a pre-existing account or create a new account
-            System.out.println("Log-In [1] or Create New Account [2]?\n");
+            System.out.println("Log-In [1] or Create New Account [2]?");
             String repsonse = scan.nextLine();
 
             try {
@@ -102,7 +109,7 @@ public class Account {
                     if (getEmail().contains("@") && !getEmail().contains(",") && !getEmail().contains(" ")) {
                         break;
                     } else {
-                        System.out.println("Please enter a valid email!");
+                        System.out.println("Please enter a valid email!\n");
                     }
                 } while (true);
 
@@ -119,7 +126,7 @@ public class Account {
 
 
                 // Check if given email and password exists in accounts.txt
-                accountFound = checkFiles(getEmail(), getPassword(), accountChoice);
+                accountFound = checkFiles(accountChoice);
                 if (!accountFound) {    // Account not found
                     System.out.println("Incorrect credentials!");
                     System.out.println("Would you like to try again? [Y] or [N]:");
@@ -173,7 +180,7 @@ public class Account {
                     }
                 } while (true);
 
-                // TODO: Setup Seller/Customer role selector code
+                // Seller/Customer role selector code
                 do {
                     System.out.println("Are you a Seller [1] or Customer [2]?:");
                     int option = scan.nextInt();
@@ -191,9 +198,9 @@ public class Account {
                     }
                 } while (true);
 
-                accountFound = checkFiles(getEmail(), getPassword(), accountChoice);
+                accountFound = checkFiles(accountChoice);
                 if (accountFound) {    // Account already exists
-                    System.out.println("Email already in use!");
+                    System.out.println("Email or username already in use!");
                     System.out.println("Would you like to try again? [Y] or [N]:");
                     String again = scan.nextLine().toUpperCase();
 
@@ -210,17 +217,34 @@ public class Account {
             // Add new account info to accounts.txt
             FileOutputStream fos = new FileOutputStream("accounts.txt", true);
             PrintWriter pw = new PrintWriter(fos);
-            pw.printf("%s,%s,%s,%s", getUsername(), getEmail(), getPassword(), "Customer");
+            pw.printf("%s,%s,%s,%s", getUsername(), getEmail(), getPassword(), getRole());
             pw.close();
         }
 
         account = new Account(getUsername(), getEmail(), getPassword(), getRole());
+
+        if (getRole().equals("Seller") && accountChoice == 2) {    // If new account is a seller
+            do {
+                Seller seller = new Seller(account);
+                System.out.println("Please create a store: ");
+                String storeName = scan.nextLine();
+                boolean createdStore = seller.createStore(storeName);
+
+                if (createdStore) {
+                    break;
+                } else {
+                    System.out.println("Store name already taken, try a new name!");
+                }
+
+            } while (true);
+        }
+
         return account;
     }
 
 
     // Checks if provided account information is found in accounts.txt
-    public boolean checkFiles(String email, String password, int accountChoice) throws IOException {
+    public boolean checkFiles(int accountChoice) throws IOException {
         File f = new File("accounts.txt");
         BufferedReader bfr = new BufferedReader(new FileReader(f));
         String line = bfr.readLine();
@@ -228,14 +252,13 @@ public class Account {
         while (line != null) {
             String[] accountInfo = line.split(",");
             if (accountChoice == 1) {    // Log In: Find email and password
-                if (accountInfo[1].equals(email) && accountInfo[2].equals(password)) {
+                if (accountInfo[1].equals(getEmail()) && accountInfo[2].equals(getPassword())) {
                     setUsername(accountInfo[0]);
                     setRole(accountInfo[3]);
                     return true;
                 }
             } else if (accountChoice == 2) {    // Create Account: See if email is available
-                // TODO: Check if username available
-                if (accountInfo[1].equals(email)) {
+                if (accountInfo[1].equals(getEmail()) || accountInfo[0].equals(getUsername())) {
                     return true;
                 }
             }
@@ -246,6 +269,7 @@ public class Account {
         return false;
     }
 
+    // Creates an arrayList of all customers
     public ArrayList<String> getCustomerList() throws IOException {
         BufferedReader br = new BufferedReader(new FileReader("accounts.txt"));
         String line = "";
@@ -258,6 +282,7 @@ public class Account {
         return customers;
     }
 
+    // Creates an arrayList of all sellers
     public ArrayList<String> getSellers() throws IOException {
         BufferedReader br = new BufferedReader(new FileReader("accounts.txt"));
         String line = "";
@@ -270,6 +295,7 @@ public class Account {
         return sellers;
     }
 
+    // Creates an arrayList of stores
     public ArrayList<String> getStores() throws IOException {
         for (String seller : getSellers()) {
             if (new File(seller + ".txt").exists()) {
@@ -288,12 +314,4 @@ public class Account {
     public String toString() {
         return String.format("%s-%s-%s-%s", username, email, password, role);
     }
-
-//    public Account login() {
-//
-//    }
-//
-//    public Account createAccount() {
-//
-//    }
 }
