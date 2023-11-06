@@ -96,15 +96,13 @@ public class Seller extends Account {
         while (line != null) {
             String[] row = line.split(",");
             if (row[3].equals("Customer")) {
-                System.out.printf(row[0]);
+                System.out.println(row[0]);
             }
         }
     }
 
-    public boolean searchCustomer() {
-
-
-        return true;
+    public boolean searchCustomer(String customerName) throws IOException {
+        return getCustomerList().contains(customerName);
     }
 
     public boolean checkStores(String storeName) throws IOException {
