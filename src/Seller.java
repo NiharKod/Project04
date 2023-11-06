@@ -88,12 +88,21 @@ public class Seller extends Account {
         }
     }
 
-    public void viewCustomers() {
+    public void viewCustomers() throws IOException {
+        File f = new File("accounts.txt");
+        br = new BufferedReader(new FileReader(f));
 
+        String line = br.readLine();
+        while (line != null) {
+            String[] row = line.split(",");
+            if (row[3].equals("Customer")) {
+                System.out.println(row[0]);
+            }
+        }
     }
 
-    public boolean searchCustomer() {
-        return true;
+    public boolean searchCustomer(String customerName) throws IOException {
+        return getCustomerList().contains(customerName);
     }
 
     public boolean checkStores(String storeName) throws IOException {
