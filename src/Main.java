@@ -38,6 +38,11 @@ public class Main {
 
                         Message message = new Message(user, userToMessage);
                         message.printMessageHistory();
+
+                        //test for sending message
+                        System.out.println("Enter Message:");
+                        message.sendMessage(input.nextLine());
+
                     }
 
                 //search for a specific customer to message
