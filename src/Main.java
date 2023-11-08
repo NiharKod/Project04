@@ -4,6 +4,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * notes:
+ * figure out how to keep code running even after exception (while loop around the whole try-catch?)
+ */
+
 public class Main {
     public static void main(String[] args) {
         try {
@@ -12,68 +17,145 @@ public class Main {
             Scanner input = new Scanner(System.in);
             //System.out.println(user);
 
-            //selection menu to: see customers/stores list, create store (sellers), message
+            /**
+             * below is for customer actions
+             */
             if (user.getRole().equalsIgnoreCase("customer")) {
                 //customer actions
-                //todo
-            } else if (user.getRole().equalsIgnoreCase("seller")) {
-                //seller actions
-                System.out.println("View Customers List [1] or Search for a Customer [2]?");
-                int response = input.nextInt();
-                input.nextLine();
+                Customer customer = new Customer(user.getUsername(), user.getEmail(), user.getPassword(),
+                        user.getRole());
 
-                //view customers list and choose one of the customers to message
-                if (response == 1) {
-                    //todo
-                    for (String customer : user.getCustomerList()) {
-                        System.out.println(customer);
-                    }
-
-                    System.out.println("\nMessage User [1] or Cancel [0]");
-                    int newResponse = input.nextInt();
+                outer: while (true) {
+                    System.out.println("View Stores List [1], Search for a Seller [2], or Cancel [0]?");
+                    int response = input.nextInt();
                     input.nextLine();
-                    if (newResponse == 1) {
-                        System.out.println("Select a user to message: ");
-                        String userToMessage = input.nextLine();
 
-                        Message message = new Message(user, userToMessage);
-                        message.printMessageHistory();
+                    //view stores list and choose one of the stores (sellers) to message
+                    if (response == 1) {
+                        customer.viewStores();
 
-                        //test for sending message
-                        System.out.println("Enter Message:");
-                        message.sendMessage(input.nextLine());
+                        //looping continues forever until user chooses cancel [0]
+                        while (true) {
+                            //blocking would be implemented here as 'Block User [2]'
+                            System.out.println("\nMessage Store [1] or Cancel [0]");
+                            int newResponse = input.nextInt();
+                            input.nextLine();
 
-                    }
+                            if (newResponse == 1) {
+                                System.out.println("Select a store to message: ");
+                                String storeToMesssage = input.nextLine();
 
-                //search for a specific customer to message
-                } else if (response == 2) {
-                    //todo/fix
-                    System.out.println("Please enter a username. Remember that all names are case-sensitive. ");
-                    String inputUsername = input.nextLine();
+                                //todo here since store doesn't match with seller automatically
 
-                    //check if inside the accounts list
-                    BufferedReader bfr = new BufferedReader(new FileReader(new File("accounts.txt")));
-                    String[] line = bfr.readLine().split(",");
-                    String fileUsername = line[0];
-                    int counter = 0;
+                                Message message = new Message(customer, storeToMesssage);
+                                message.printMessageHistory();
 
-
-                    while (fileUsername != null) {
-                        if (inputUsername.equals(fileUsername)) {
-                            counter++;
+                                System.out.println("Enter Message:");
+                                message.sendMessage(input.nextLine());
+                            } else if (newResponse == 0) {
+                                System.out.println("Messaging quit successfully.");
+                                break outer;
+                            } else {
+                                System.out.println("Invalid input. Please try again.");
+                            }
                         }
-                        line = bfr.readLine().split(",");
-                        fileUsername = line[0];
-                    }
 
-                    if (counter == 0) {
-                        System.out.println("User not found.");
+                        //search for a specific seller to message
+                    } else if (response == 2) {
+                        //todo: method doesn't work
+                        customer.searchSeller();
+
+                    } else if (response == 0) {
+                        System.out.println("System quit successfully.");
+                        break;
                     } else {
-                        System.out.println("Would you like to message user " + fileUsername + "?");
+                        System.out.println("Invalid input. Please try again.\n");
                     }
+                }
 
-                } else {
-                    System.out.println();
+                /**
+                 * below is for seller actions
+                 */
+            } else if (user.getRole().equalsIgnoreCase("seller")) {
+                //note: looping implemented!
+                //seller actions
+                outer: while (true) {
+                    System.out.println("View Customers List [1], Search for a Customer [2], or Cancel [0]?");
+                    int response = input.nextInt();
+                    input.nextLine();
+
+                    //view customers list and choose one of the customers to message
+                    if (response == 1) {
+                        System.out.println("List of all customers:");
+                        for (String customer : user.getCustomerList()) {
+                            System.out.println(customer);
+                        }
+
+                        //looping that will continue to loop unless user selects to cancel messaging [0]
+                        while (true) {
+                            //blocking would be implemented here as 'or Block User [2]'
+                            System.out.println("\nMessage User [1] or Cancel [0]");
+                            int newResponse = input.nextInt();
+                            input.nextLine();
+                            if (newResponse == 1) {
+                                System.out.println("Select a user to message: ");
+                                String userToMessage = input.nextLine();
+
+                                Message message = new Message(user, userToMessage);
+                                message.printMessageHistory();
+
+                                System.out.println("Enter Message:");
+                                message.sendMessage(input.nextLine());
+
+                            } else if (newResponse == 0) {
+                                System.out.println("Messaging quit successfully.");
+                                break outer;
+                            } else {
+                                System.out.println("Invalid input. Please try again.");
+                            }
+                        }
+
+                        //search for a specific customer to message
+                    } else if (response == 2) {
+                        System.out.println("Please enter a username. Remember that all names are case-sensitive. ");
+                        String inputUsername = input.nextLine();
+
+                        //check if inside the accounts list
+                        Seller seller = new Seller(user);
+                        boolean search = seller.searchCustomer(inputUsername);
+
+                        //looping will implement until user types [0] to cancel
+                        while (true) {
+                            //customer username is found, can message
+                            if (search) {
+                                //blocking would be implemented here as 'or block customer [2]'
+                                System.out.println("Message Customer " + inputUsername + " [1] or Cancel [0]");
+                                int newResponse = input.nextInt();
+                                input.nextLine();
+
+                                if (newResponse == 1) {
+                                    Message message = new Message(user, inputUsername);
+                                    message.printMessageHistory();
+
+                                    System.out.println("Enter Message:");
+                                    message.sendMessage(input.nextLine());
+
+                                } else if (newResponse == 0) {
+                                    System.out.println("Messaging quit successfully.");
+                                    break outer;
+                                } else {
+                                    System.out.println("Invalid Input. Please try again.");
+                                }
+
+                                //customer username not found, can't message
+                            } else {
+                                throw new CantMessageException(user.getRole());
+                            }
+                        }
+
+                    } else {
+                        System.out.println("Invalid input.");
+                    }
                 }
             }
 
