@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,17 +67,16 @@ public class Customer extends Account {
     }
 
     // Method to search for a seller and assign if found
-    public void searchSeller() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the username of the seller you want to search:");
-        String input = scanner.nextLine();
+    public void searchSeller() throws IOException {
+        File f = new File("accounts.txt");
+        BufferedReader br = new BufferedReader(new FileReader(f));
 
-        int index = usernames.indexOf(input);
-        if (index != -1 && roles.get(index).equalsIgnoreCase("Seller")) {
-            assignedSeller = input;
-            System.out.println("Assigned seller: " + assignedSeller);
-        } else {
-            System.out.println("No seller found with that username.");
+        String line = br.readLine();
+        while (line != null) {
+            String[] row = line.split(",");
+            if (row[3].equals("Seller")) {
+                System.out.println(row[0]);
+            }
         }
     }
 
