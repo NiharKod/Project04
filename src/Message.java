@@ -27,11 +27,14 @@ public class Message {
         //creating the file for messaging ot finding it if it is there already.
         this.from = from;
         //create the to file if its not there already.
-        pwTo = new PrintWriter(new FileOutputStream(from.getUsername() + "-"
+
+        pwTo = new PrintWriter(new FileOutputStream(this.to.getUsername() + "-"
+                + from.getUsername() + ".txt", true));
+
+        pwFrom = new PrintWriter(new FileOutputStream(from.getUsername() + "-"
                 + this.to.getUsername() + ".txt", true));
         //create the from file if it is not there already;
-        pwFrom = new PrintWriter(new FileOutputStream(this.to.getUsername() + "-"
-                + from.getUsername() + ".txt", true));
+
     }
 
     public void sendMessage(String message) throws IOException {
@@ -43,60 +46,137 @@ public class Message {
     }
 
     public void printMessageHistory() throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(from.getUsername() + "-"
+        BufferedReader brFrom = new BufferedReader(new FileReader(from.getUsername() + "-"
                 + this.to.getUsername() + ".txt"));
         String line;
         //finding the user account and assigning it to the to.
-        while ((line = br.readLine()) != null) {
+        while ((line = brFrom.readLine()) != null) {
             System.out.println(line);
         }
         System.out.println("-");
     }
 
     public void printMessageHistoryWithIndeces() throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(from.getUsername() + "-"
+
+        BufferedReader brFrom = new BufferedReader(new FileReader(from.getUsername() + "-"
                 + this.to.getUsername() + ".txt"));
         String line;
-        int i = 0;
+        int i = 1;
         //finding the user account and assigning it to the to.
-        while ((line = br.readLine()) != null) {
+        while ((line = brFrom.readLine()) != null) {
             System.out.printf("[%d] %s\n", i, line);
             i++;
         }
         System.out.println("-");
     }
 
-    public void editMessage() {
+    public void editMessage(int lineIndex, String updatedMessage) throws IOException {
+        String originalMessage = "";
+        //read in the from message.
+        BufferedReader brFrom = new BufferedReader(new FileReader(from.getUsername() + "-"
+                + this.to.getUsername() + ".txt"));
+
+        //read every line into an array list.
+        ArrayList<String> messages = new ArrayList<>();
+        String line;
+        while ((line = brFrom.readLine()) != null) {
+            messages.add(line);
+        }
+        //store original message for later
+        originalMessage = messages.get(lineIndex);
+        //update the message
+        messages.set(lineIndex, updatedMessage);
+
+        //delete original file
+        File f = new File(from.getUsername() + "-"
+                + this.to.getUsername() + ".txt");
+
+        f.delete();
+        //rewrite contents with deleted line.
+        pwFrom = new PrintWriter(new FileOutputStream(from.getUsername() + "-"
+                + this.to.getUsername() + ".txt", true));
+
+        for (String m : messages) {
+            pwFrom.println(m);
+            pwFrom.flush();
+        }
+
+        //read the to file
+        BufferedReader brTo = new BufferedReader(new FileReader(this.to.getUsername() + "-"
+                + from.getUsername() + ".txt"));
+
+        //read every line into an array list.
+
+        messages.clear();
+        line = "";
+
+        while ((line = brTo.readLine()) != null) {
+            messages.add(line);
+        }
+
+        for (int i = 0; i < messages.size(); i++) {
+            if (messages.get(i).equals(originalMessage)) {
+                messages.set(i, updatedMessage);
+                break;
+            }
+        }
+
+
+        //delete original file
+        f = new File(this.to.getUsername() + "-"
+                + from.getUsername() + ".txt");
+
+        f.delete();
+        //rewrite contents with deleted line.
+        pwTo = new PrintWriter(new FileOutputStream(this.to.getUsername() + "-"
+                + from.getUsername() + ".txt", true));
+
+
+        for (String m : messages) {
+            pwTo.println(m);
+            pwTo.flush();
+        }
+        //print out history.
+        printMessageHistory();
+
+        pwTo.close();
+        pwFrom.close();
+        brFrom.close();
+        brTo.close();
+
 
     }
 
     public void deleteMessage(int i) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(from.getUsername() + "-"
+        BufferedReader brFrom = new BufferedReader(new FileReader(from.getUsername() + "-"
                 + this.to.getUsername() + ".txt"));
         //read every line into an array list. delete line.
         ArrayList<String> messages = new ArrayList<>();
         String line;
-        while ((line = br.readLine()) != null) {
+        while ((line = brFrom.readLine()) != null) {
             messages.add(line);
         }
         //remove message
         messages.remove(i);
 
         //delete original file
-        File f = new File(this.to.getUsername() + "-"
-                + from.getUsername() + ".txt");
+        File f = new File(from.getUsername() + "-"
+                + this.to.getUsername() + ".txt");
 
         f.delete();
         //rewrite contents with deleted line.
-        pwFrom = new PrintWriter(new FileOutputStream(this.to.getUsername() + "-"
-                + from.getUsername() + ".txt", true));
+        pwFrom = new PrintWriter(new FileOutputStream(from.getUsername() + "-"
+                + this.to.getUsername() + ".txt", true));
 
         for (String m : messages) {
             pwFrom.println(m);
             pwFrom.flush();
         }
-        pwTo.close();
+        //print out history.
+        printMessageHistory();
+        pwFrom.close();
         br.close();
+
     }
 
 
