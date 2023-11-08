@@ -217,12 +217,13 @@ public class Account {
             // Add new account info to accounts.txt
             FileOutputStream fos = new FileOutputStream("accounts.txt", true);
             PrintWriter pw = new PrintWriter(fos);
-            pw.printf("%s,%s,%s,%s", getUsername(), getEmail(), getPassword(), getRole());
+            pw.printf("%s,%s,%s,%s\n", getUsername(), getEmail(), getPassword(), getRole());
             pw.close();
         }
 
         account = new Account(getUsername(), getEmail(), getPassword(), getRole());
 
+        //TODO: This not running
         if (getRole().equals("Seller") && accountChoice == 2) {    // If new account is a seller
             do {
                 Seller seller = new Seller(account);
@@ -283,7 +284,7 @@ public class Account {
     }
 
     // Creates an arrayList of all sellers
-    public ArrayList<String> getSellers() throws IOException {
+    public ArrayList<String> getSellerList() throws IOException {
         BufferedReader br = new BufferedReader(new FileReader("accounts.txt"));
         String line = "";
         while ((line = br.readLine()) != null) {
@@ -296,8 +297,6 @@ public class Account {
     }
 
     // Creates an arrayList of stores
-
-
 
     public String toString() {
         return String.format("%s-%s-%s-%s", username, email, password, role);

@@ -67,17 +67,14 @@ public class Customer extends Account {
     }
 
     // Method to search for a seller and assign if found
-    public void searchSeller() throws IOException {
-        File f = new File("accounts.txt");
-        BufferedReader br = new BufferedReader(new FileReader(f));
+    public boolean searchSeller(String sellerName) throws IOException {
+        return (getSellerList().contains(sellerName));
+    }
 
-        String line = br.readLine();
-        while (line != null) {
-            String[] row = line.split(",");
-            if (row[3].equals("Seller")) {
-                System.out.println(row[0]);
-            }
-        }
+    // Method to find seller name from storename
+    public String storeToSeller(String storeName) {
+        // TODO: Find seller name from storename
+        return "";
     }
 
     public String getAssignedSeller() {
