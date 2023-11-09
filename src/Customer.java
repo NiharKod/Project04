@@ -68,7 +68,12 @@ public class Customer extends Account {
 
     // Method to search for a seller and assign if found
     public boolean searchSeller(String sellerName) throws IOException {
-        return (getSellerList().contains(sellerName));
+        if (getSellerList().contains(sellerName)) {
+            assignedSeller = sellerName; // Assign the seller to the customer
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // Method to find seller name from storename
