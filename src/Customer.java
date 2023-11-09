@@ -73,9 +73,27 @@ public class Customer extends Account {
 
     // Method to find seller name from storename
     public String storeToSeller(String storeName) {
-        // TODO: Find seller name from storename
+        try (BufferedReader br = new BufferedReader(new FileReader("storemanager.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] userData = line.split(",");
+                if (userData.length > 1) {
+                    for (int i = 1; i < userData.length; i++) {
+                        if (userData[i].trim().equals(storeName)) {
+                            // Return the username (assuming the first element is the username)
+                            return userData[0].trim();
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading store data from the file");
+        }
+
+        // Return an empty string if the store name is not found
         return "";
     }
+
 
     public String getAssignedSeller() {
         return assignedSeller;
