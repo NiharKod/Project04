@@ -61,11 +61,22 @@ public class Main {
                         }
 
                         //search for a specific seller to message
+                        //search for a specific seller to message
                     } else if (response == 2) {
-                        //todo: method doesn't work
-                        customer.searchSeller();
+                        System.out.println("Enter the seller's username to search: ");
+                        String sellerToSearch = input.nextLine();
 
-                    } else if (response == 0) {
+                        // Call the searchSeller method with the entered seller's name
+                        boolean foundSeller = customer.searchSeller(sellerToSearch);
+
+                        if (foundSeller) {
+                            System.out.println("Seller found. You can now message the seller.");
+                            // Implement messaging logic with the found seller
+                        } else {
+                            System.out.println("Seller not found.");
+                        }
+                    }
+                    else if (response == 0) {
                         System.out.println("System quit successfully.");
                         break;
                     } else {
