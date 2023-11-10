@@ -311,15 +311,14 @@ public class Account {
     }
 
     //blocking section
-    //if user1 is on user2's block list, user1 cannot send user2 messages
+    //if user1 is on user2's blocked-by list, user2 cannot send a message to user1
     public void writeBlockedByList(String username) throws FileNotFoundException {
-        File f = new File(this.username + "BlockedByList.txt");
+        File f = new File(username + "BlockedByList.txt");
         FileOutputStream fos = new FileOutputStream(f, true);
         PrintWriter pw = new PrintWriter(fos);
 
-        pw.println(username);
+        pw.println(this.username);
         pw.flush();
-
     }
 
     //if user1 is on user2's invisible-to list, user1 cannot search for user2 (it will return no user found)
