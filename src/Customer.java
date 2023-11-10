@@ -21,6 +21,14 @@ public class Customer extends Account {
         this.storeNames = new ArrayList<>(); // Initialize the storeNames list
     }
 
+    public Customer(Account account) {
+        super(account);
+        this.usernames = new ArrayList<>(); // Initialize the usernames list
+        this.roles = new ArrayList<>(); // Initialize the roles list
+        this.assignedSeller = null; // Initialize assignedSeller to null
+        this.storeNames = new ArrayList<>(); // Initialize the storeNames list
+    }
+
     // Method to load user accounts and their roles from "accounts.txt" file
     public void loadUserAccounts() {
         try (BufferedReader br = new BufferedReader(new FileReader("accounts.txt"))) {
