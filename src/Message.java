@@ -83,9 +83,9 @@ public class Message {
             messages.add(line);
         }
         //store original message for later
-        originalMessage = messages.get(lineIndex);
+        originalMessage = messages.get(lineIndex - 1);
         //update the message
-        messages.set(lineIndex, updatedMessage);
+        messages.set(lineIndex - 1, String.format("(%s)%s: %s", from.getRole(), from.getUsername(), updatedMessage));
 
         //delete original file
         File f = new File(from.getUsername() + "-"
@@ -116,7 +116,7 @@ public class Message {
 
         for (int i = 0; i < messages.size(); i++) {
             if (messages.get(i).equals(originalMessage)) {
-                messages.set(i, updatedMessage);
+                messages.set(i, String.format("(%s)%s: %s", from.getRole(), from.getUsername(), updatedMessage));
                 break;
             }
         }
@@ -143,7 +143,6 @@ public class Message {
         pwFrom.close();
         brFrom.close();
         brTo.close();
-
 
     }
 
@@ -178,6 +177,4 @@ public class Message {
         br.close();
 
     }
-
-
 }
