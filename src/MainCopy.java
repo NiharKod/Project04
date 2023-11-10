@@ -47,9 +47,9 @@ public class MainCopy {
                                 System.out.println("Select a store to message: ");
                                 String storeToMesssage = input.nextLine();
 
-                                //todo here since store doesn't match with seller automatically
+                                String sellerToMessage = customer.storeToSeller(storeToMesssage);
 
-                                Message message = new Message(customer, storeToMesssage);
+                                Message message = new Message(customer, sellerToMessage);
                                 message.printMessageHistory();
 
                                 System.out.println("Enter Message:");
@@ -194,7 +194,6 @@ public class MainCopy {
 
                         //search for a specific customer to message
                     } else if (response == 2) {
-                        //todo: broken due to an issue in Seller (?)
                         System.out.println("Please enter a username. Remember that all names are case-sensitive. ");
                         String inputUsername = input.nextLine();
 

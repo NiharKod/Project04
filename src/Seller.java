@@ -21,7 +21,7 @@ public class Seller extends Account {
                 for (String s : line.split(",")) {
                     stores.add(s);
                 }
-                sellers.remove(0);
+                stores.remove(0);
                 break;
             }
         }
@@ -32,11 +32,11 @@ public class Seller extends Account {
         br = new BufferedReader(new FileReader("storemanager.txt"));
         String line = "";
         while ((line = br.readLine()) != null) {
-            if (line.contains(super.getUsername())) {
+            if (line.contains(getUsername())) {
                 for (String s : line.split(",")) {
                     stores.add(s);
                 }
-                sellers.remove(0);
+                stores.remove(0);
                 break;
             }
         }
@@ -51,7 +51,6 @@ public class Seller extends Account {
             br = new BufferedReader(new FileReader("storemanager.txt"));
             String line = br.readLine();
             while (line != null) {
-                System.out.println("Line: " + line);
                 String[] row = line.split(",");
                 ArrayList<String> sellerInfo = new ArrayList<>();
 
@@ -64,7 +63,6 @@ public class Seller extends Account {
             }
             br.close();
 
-            System.out.println("ArrayList: " + storeManager.toString());
             boolean foundStore = false;
 
             // Find user in storeManager and add storeName to their information

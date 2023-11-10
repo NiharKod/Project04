@@ -3,3 +3,5 @@ JohnDoe,John-Mart,Doe's Sledding Goods
 newUSER,store1,store2,store3
 Carlos,CarlosWorld
 Carlos2,CarlosWorld2
+Jerry,Cheese-Mart
+Iroh,Iroh's Fireball Tea
