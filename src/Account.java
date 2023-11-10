@@ -309,4 +309,26 @@ public class Account {
     public String toString() {
         return String.format("(Account)<Username=%s,Email=%s,Password=%s,Role=%s>", username, email, password, role);
     }
+
+    //blocking section
+    //if user1 is on user2's block list, user1 cannot send user2 messages
+    public void writeBlockList(String username) throws FileNotFoundException {
+        File f = new File(this.username + "BlockList.txt");
+        FileOutputStream fos = new FileOutputStream(f, true);
+        PrintWriter pw = new PrintWriter(fos);
+
+        pw.println(username);
+        pw.flush();
+
+    }
+
+    //if user1 is on user2's invisible-to list, user1 cannot search for user2 (it will return no user found)
+    public void writeInvisibleToList(String username) throws FileNotFoundException {
+        File f = new File(this.username + "InvisibleToList.txt");
+        FileOutputStream fos = new FileOutputStream(f, true);
+        PrintWriter pw = new PrintWriter(fos);
+
+        pw.println(username);
+        pw.flush();
+    }
 }

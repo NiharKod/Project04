@@ -62,24 +62,43 @@ public class Main {
                         }
 
                         //search for a specific seller to message
-                        //search for a specific seller to message
                     } else if (response == 2) {
-                        System.out.println("Enter the seller's username to search: ");
+                        System.out.println("Please enter a username. Remember that all names are case-sensitive.");
                         String sellerToSearch = input.nextLine();
 
                         // Call the searchSeller method with the entered seller's name
                         boolean foundSeller = customer.searchSeller(sellerToSearch);
 
-                        if (foundSeller) {
-                            System.out.println("Seller found. You can now message the seller.");
-                            // Implement messaging logic with the found seller
-                        } else {
-                            System.out.println("Seller not found.");
+                        while (true) {
+                            if (foundSeller) {
+                                System.out.println("Message Seller " + sellerToSearch + " [1] or Cancel [0]");
+                                int newResponse = input.nextInt();
+                                input.nextLine();
+
+                                if (newResponse == 1) {
+                                    Message message = new Message(user, sellerToSearch);
+                                    message.printMessageHistory();
+
+                                    System.out.println("Enter Message:");
+                                    message.sendMessage(input.nextLine());
+
+                                } else if (newResponse == 0) {
+                                    System.out.println("Messaging quit successfully.");
+                                    break outer;
+                                } else {
+                                    System.out.println("Invalid Input. Please try again.");
+                                }
+
+                                //seller not found
+                            } else {
+                                throw new CantMessageException(user.getRole());
+                            }
                         }
-                    }
-                    else if (response == 0) {
+
+                    } else if (response == 0) {
                         System.out.println("System quit successfully.");
                         break;
+
                     } else {
                         System.out.println("Invalid input. Please try again.\n");
                     }
@@ -129,6 +148,7 @@ public class Main {
 
                         //search for a specific customer to message
                     } else if (response == 2) {
+                        //todo: broken due to an issue in Seller (?)
                         System.out.println("Please enter a username. Remember that all names are case-sensitive. ");
                         String inputUsername = input.nextLine();
 
@@ -165,12 +185,14 @@ public class Main {
                             }
                         }
 
+                    } else if (response == 0) {
+                        System.out.println("System quit successfully.");
+                        break;
                     } else {
-                        System.out.println("Invalid input.");
+                        System.out.println("Invalid input. Please try again.\n");
                     }
                 }
             }
-
 
         } catch (IOException e) {
             e.printStackTrace();
