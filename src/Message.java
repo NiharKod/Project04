@@ -156,7 +156,7 @@ public class Message {
             messages.add(line);
         }
         //remove message
-        messages.remove(i);
+        messages.remove(i - 1);
 
         //delete original file
         File f = new File(from.getUsername() + "-"
@@ -174,7 +174,7 @@ public class Message {
         //print out history.
         printMessageHistory();
         pwFrom.close();
-        br.close();
+        brFrom.close();
 
     }
 }
