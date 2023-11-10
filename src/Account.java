@@ -321,6 +321,14 @@ public class Account {
         pw.flush();
     }
 
+    public void checkIfBlocked() throws FileNotFoundException {
+        File f = new File(this.getUsername() + "BlockedByList.txt");
+        FileReader fr = new FileReader(f);
+        BufferedReader bfr = new BufferedReader(fr);
+
+
+    }
+
     //if user1 is on user2's invisible-to list, user1 cannot search for user2 (it will return no user found)
     public void writeInvisibleToList(String username) throws FileNotFoundException {
         File f = new File(this.username + "InvisibleToList.txt");
