@@ -8,3 +8,5 @@ Carlos,carlos@gmail.com,CreativePassword123,Seller
 Carlos2,carlos2@gmail.com,CreativerPassword,Seller
 Jerry,reallyLikesCheese@gmail.com,TomAndJerry!,Seller
 Iroh,tea@outlook.com,Dragon@TheWest,Seller
+TestUser1,Test1@gmail.com,Test@1,Seller
+TestUser2,Test2@gmail.com,Test@2,Customer

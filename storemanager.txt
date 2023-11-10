@@ -5,3 +5,4 @@ Carlos,CarlosWorld
 Carlos2,CarlosWorld2
 Jerry,Cheese-Mart
 Iroh,Iroh's Fireball Tea
+TestUser1,TestStore1,TestStore2
