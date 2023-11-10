@@ -3,3 +3,5 @@ JohnDoe,jdoe@gmail.com,Password123,Seller
 FaeKname,fkname@yahoo.com,Uncrackable22,Customer
 niharkod,nihar@gmail.com,nkodkani04,Customer
 newUSER,new@gmail.com,fancybook312,Seller
+Carlos,carlos@gmail.com,CreativePassword123,Seller
+Carlos2,carlos2@gmail.com,CreativerPassword,Seller

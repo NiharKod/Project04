@@ -13,7 +13,6 @@ public class Seller extends Account {
     public Seller(String username, String email, String password, String role) throws IOException {
         super(username, email, password, role);
         //grab store information from file
-        pw = new PrintWriter(new BufferedWriter(new FileWriter("storemanager.txt")));
         br = new BufferedReader(new FileReader("storemanager.txt"));
 
         String line = "";
@@ -30,7 +29,6 @@ public class Seller extends Account {
 
     public Seller(Account account) throws IOException {
         super(account);
-        pw = new PrintWriter(new BufferedWriter(new FileWriter("storemanager.txt")));
         br = new BufferedReader(new FileReader("storemanager.txt"));
         String line = "";
         while ((line = br.readLine()) != null) {
@@ -46,14 +44,14 @@ public class Seller extends Account {
 
     // Create store
     public boolean createStore(String storeName) throws IOException {
-        if (!checkStores(storeName)) {
-            File f = new File("storemanager.txt");
+        if (!getStores().contains(storeName)) {
             ArrayList<ArrayList<String>> storeManager = new ArrayList<>();
 
             // Read through storemanager.txt to convert information to a 2D arrayList called storeManager
-            br = new BufferedReader(new FileReader(f));
+            br = new BufferedReader(new FileReader("storemanager.txt"));
             String line = br.readLine();
             while (line != null) {
+                System.out.println("Line: " + line);
                 String[] row = line.split(",");
                 ArrayList<String> sellerInfo = new ArrayList<>();
 
@@ -66,22 +64,35 @@ public class Seller extends Account {
             }
             br.close();
 
+            System.out.println("ArrayList: " + storeManager.toString());
+            boolean foundStore = false;
+
             // Find user in storeManager and add storeName to their information
             for (int i = 0; i < storeManager.size(); i++) {
                 if (storeManager.get(i).get(0).equals(getUsername())) {
                     storeManager.get(i).add(storeName);
+                    foundStore = true;
                 }
             }
 
+            // If no user, add user and their store to storemanager.txt
+            if (!foundStore) {
+                ArrayList<String > newSeller = new ArrayList<>();
+                newSeller.add(getUsername());
+                newSeller.add(storeName);
+                storeManager.add(newSeller);
+            }
+
             // Write storeManager to new storemanager.txt
-            pw = new PrintWriter(new BufferedWriter(new FileWriter("storemanager.txt")));
+            pw = new PrintWriter(new FileWriter("storemanager.txt"));
             for (int i = 0; i < storeManager.size(); i++) {
-                String row = getUsername();
+                String row = storeManager.get(i).get(0);
                 for (int k = 1; k < storeManager.get(i).size(); k++) {
                     row += "," + storeManager.get(i).get(k);
                 }
                 pw.println(row);
             }
+            pw.close();
             return true;
         } else {
             return false;
@@ -105,10 +116,6 @@ public class Seller extends Account {
         return getCustomerList().contains(customerName);
     }
 
-    public boolean checkStores(String storeName) throws IOException {
-        return allStores.contains(storeName);
-    }
-
     public ArrayList<String> getStores() throws IOException {
         br = new BufferedReader(new FileReader("storemanager.txt"));
         String line;
@@ -117,6 +124,7 @@ public class Seller extends Account {
                 allStores.add(line.split(",")[i]);
             }
         }
+        br.close();
         return allStores;
     }
 

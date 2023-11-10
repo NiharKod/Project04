@@ -162,7 +162,8 @@ public class Account {
                     System.out.println("Please Enter your Email:");
                     setEmail(scan.nextLine());
 
-                    if (getEmail().contains("@") && !getEmail().contains(",") && !getEmail().contains(" ")) {
+                    if (getEmail().contains("@") && !getEmail().contains(",") && !getEmail().contains(" ")
+                            && !getEmail().startsWith("@") && !getEmail().endsWith("@")) {
                         break;
                     } else {
                         System.out.println("Please enter a valid email!");
@@ -170,10 +171,13 @@ public class Account {
                 } while (true);
 
                 do {    // Validate Password
-                    System.out.println("Please Enter your Password:");
+                    System.out.println("Please Enter your Password (Must be 6 characters and" +
+                            " have 1 special character [!,@,#,$,%]):");
                     setPassword(scan.nextLine());
 
-                    if (!getPassword().contains(",") && !getPassword().contains(" ")) {
+                    if ((!getPassword().contains(",") && !getPassword().contains(" ") && (getPassword().length() >= 6)) &&
+                            (getPassword().contains("!") || getPassword().contains("@") || getPassword().contains("#")
+                                    || getPassword().contains("$") || getPassword().contains("%"))) {
                         break;
                     } else {
                         System.out.println("Please enter a valid password!");
@@ -184,6 +188,7 @@ public class Account {
                 do {
                     System.out.println("Are you a Seller [1] or Customer [2]?:");
                     int option = scan.nextInt();
+                    scan.nextLine();
 
                     setRole((option == 1) ? "Seller" : (option == 2) ? "Customer" : "");
                     try {
@@ -218,20 +223,23 @@ public class Account {
             FileOutputStream fos = new FileOutputStream("accounts.txt", true);
             PrintWriter pw = new PrintWriter(fos);
             pw.printf("%s,%s,%s,%s\n", getUsername(), getEmail(), getPassword(), getRole());
+            pw.flush();
             pw.close();
         }
 
         account = new Account(getUsername(), getEmail(), getPassword(), getRole());
 
-        //TODO: This not running
         if (getRole().equals("Seller") && accountChoice == 2) {    // If new account is a seller
+            Seller seller = new Seller(account);
+
             do {
-                Seller seller = new Seller(account);
                 System.out.println("Please create a store: ");
                 String storeName = scan.nextLine();
+
                 boolean createdStore = seller.createStore(storeName);
 
                 if (createdStore) {
+                    System.out.println("Store, " + storeName + ", created!");
                     break;
                 } else {
                     System.out.println("Store name already taken, try a new name!");
@@ -299,6 +307,6 @@ public class Account {
     // Creates an arrayList of stores
 
     public String toString() {
-        return String.format("%s-%s-%s-%s", username, email, password, role);
+        return String.format("(Account)<Username=%s,Email=%s,Password=%s,Role=%s>", username, email, password, role);
     }
 }
