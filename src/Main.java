@@ -125,9 +125,10 @@ public class Main {
                         //looping that will continue to loop unless user selects to cancel messaging [0]
                         while (true) {
                             //blocking would be implemented here as 'or Block User [2]'
-                            System.out.println("\nMessage User [1] or Cancel [0]");
+                            System.out.println("\nMessage User [1], Block User [2], or Cancel [0]");
                             int newResponse = input.nextInt();
                             input.nextLine();
+
                             if (newResponse == 1) {
                                 System.out.println("Select a user to message: ");
                                 String userToMessage = input.nextLine();
@@ -138,9 +139,19 @@ public class Main {
                                 System.out.println("Enter Message:");
                                 message.sendMessage(input.nextLine());
 
+                            //add to blocking list
+                            } else if (newResponse == 2) {
+                                //todo: fix blocking
+                                System.out.println("Select a user to block: ");
+                                String userToBlock = input.nextLine();
+
+                                user.writeBlockedByList(userToBlock);
+                                System.out.println("You have blocked user " + userToBlock + "!");
+
                             } else if (newResponse == 0) {
                                 System.out.println("Messaging quit successfully.");
                                 break outer;
+
                             } else {
                                 System.out.println("Invalid input. Please try again.");
                             }

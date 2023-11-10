@@ -312,8 +312,8 @@ public class Account {
 
     //blocking section
     //if user1 is on user2's block list, user1 cannot send user2 messages
-    public void writeBlockList(String username) throws FileNotFoundException {
-        File f = new File(this.username + "BlockList.txt");
+    public void writeBlockedByList(String username) throws FileNotFoundException {
+        File f = new File(this.username + "BlockedByList.txt");
         FileOutputStream fos = new FileOutputStream(f, true);
         PrintWriter pw = new PrintWriter(fos);
 
