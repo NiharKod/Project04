@@ -7,6 +7,7 @@ import java.util.Scanner;
 /**
  * notes:
  * figure out how to keep code running even after exception (while loop around the whole try-catch?)
+ * blocking has not been implemented yet, need to do that
  */
 
 public class MainCopy {
@@ -39,7 +40,8 @@ public class MainCopy {
                         //looping continues forever until user chooses cancel [0]
                         while (true) {
                             //blocking would be implemented here as 'Block User [2]'
-                            System.out.println("\nMessage Store [1] or Cancel [0]");
+                            System.out.println("\nMessage Store [1], Block Store [2], Edit Conversation [3], " +
+                                    "Delete a Message [4], or Cancel [0]");
                             int newResponse = input.nextInt();
                             input.nextLine();
 
@@ -47,16 +49,51 @@ public class MainCopy {
                                 System.out.println("Select a store to message: ");
                                 String storeToMesssage = input.nextLine();
 
-                                //todo here since store doesn't match with seller automatically
+                                String sellerToMessage = customer.storeToSeller(storeToMesssage);
 
-                                Message message = new Message(customer, storeToMesssage);
+                                Message message = new Message(customer, sellerToMessage);
                                 message.printMessageHistory();
 
                                 System.out.println("Enter Message:");
                                 message.sendMessage(input.nextLine());
+
+                            } else if (newResponse == 3) {
+                                System.out.println("Select a store to edit conversation history: ");
+                                String storeToEdit = input.nextLine();
+
+                                String sellerToEdit = customer.storeToSeller(storeToEdit);
+
+                                Message message = new Message(user, sellerToEdit);
+                                message.printMessageHistoryWithIndeces();
+
+                                System.out.println("Select a line to edit: ");
+                                int lineToEdit = input.nextInt();
+                                input.nextLine();
+
+                                System.out.println("Enter the new message: ");
+                                String newMessage = input.nextLine();
+
+                                message.editMessage(lineToEdit, newMessage);
+
+                            } else if (newResponse == 4) {
+                                System.out.println("Select a store to delete a message from the conversation history: ");
+                                String storeToDeleteLine = input.nextLine();
+
+                                String sellerToDeleteLine = customer.storeToSeller(storeToDeleteLine);
+
+                                Message message = new Message(user, sellerToDeleteLine);
+                                message.printMessageHistoryWithIndeces();
+
+                                System.out.println("Select a line to delete: ");
+                                int lineToDelete = input.nextInt();
+                                input.nextLine();
+
+                                message.deleteMessage(lineToDelete);
+
                             } else if (newResponse == 0) {
                                 System.out.println("Messaging quit successfully.");
                                 break outer;
+
                             } else {
                                 System.out.println("Invalid input. Please try again.");
                             }
@@ -72,7 +109,8 @@ public class MainCopy {
 
                         while (true) {
                             if (foundSeller) {
-                                System.out.println("Message Seller " + sellerToSearch + " [1] or Cancel [0]");
+                                System.out.println("Message Seller " + sellerToSearch + " [1], Block Seller [2], " +
+                                        "Edit Conversation [3], Delete a Message [4], or Cancel [0]");
                                 int newResponse = input.nextInt();
                                 input.nextLine();
 
@@ -83,9 +121,33 @@ public class MainCopy {
                                     System.out.println("Enter Message:");
                                     message.sendMessage(input.nextLine());
 
+                                } else if (newResponse == 3) {
+                                    Message message = new Message(user, sellerToSearch);
+                                    message.printMessageHistoryWithIndeces();
+
+                                    System.out.println("Select a line to edit: ");
+                                    int lineToEdit = input.nextInt();
+                                    input.nextLine();
+
+                                    System.out.println("Enter the new message: ");
+                                    String newMessage = input.nextLine();
+
+                                    message.editMessage(lineToEdit, newMessage);
+
+                                } else if (newResponse == 4) {
+                                    Message message = new Message(user, sellerToSearch);
+                                    message.printMessageHistoryWithIndeces();
+
+                                    System.out.println("Select a line to delete: ");
+                                    int lineToDelete = input.nextInt();
+                                    input.nextLine();
+
+                                    message.deleteMessage(lineToDelete);
+
                                 } else if (newResponse == 0) {
                                     System.out.println("Messaging quit successfully.");
                                     break outer;
+
                                 } else {
                                     System.out.println("Invalid Input. Please try again.");
                                 }
@@ -127,7 +189,8 @@ public class MainCopy {
                         //looping that will continue to loop unless user selects to cancel messaging [0]
                         while (true) {
                             //blocking would be implemented here as 'or Block User [2]'
-                            System.out.println("\nMessage User [1], Block User [2], Edit [3], Delete [4], or Cancel [0]");
+                            System.out.println("\nMessage User [1], Block User [2], Edit Conversation [3], " +
+                                    "Delete a Message [4], or Cancel [0]");
                             int newResponse = input.nextInt();
                             input.nextLine();
 
@@ -151,8 +214,6 @@ public class MainCopy {
                                 System.out.println("You have blocked user " + userToBlock + "!");
 
                             } else if (newResponse == 3) {
-                                //todo: index out of bounds exception in editMessage if choose the last message
-                                //todo: doesn't delete old message, just adds new message to the end
                                 System.out.println("Select a user to edit conversation history: ");
                                 String userToEdit = input.nextLine();
 
@@ -169,8 +230,6 @@ public class MainCopy {
                                 message.editMessage(lineToEdit, newMessage);
 
                             } else if (newResponse == 4) {
-                                //todo: index out of bounds exception in deleteMessage when deleting last message
-                                //todo: works if not last message, however it deletes the wrong line and returns a nullpointer
                                 System.out.println("Select a user to delete a message from the conversation history: ");
                                 String userToDeleteLine = input.nextLine();
 
@@ -194,7 +253,6 @@ public class MainCopy {
 
                         //search for a specific customer to message
                     } else if (response == 2) {
-                        //todo: broken due to an issue in Seller (?)
                         System.out.println("Please enter a username. Remember that all names are case-sensitive. ");
                         String inputUsername = input.nextLine();
 
@@ -207,7 +265,8 @@ public class MainCopy {
                             //customer username is found, can message
                             if (search) {
                                 //blocking would be implemented here as 'or block customer [2]'
-                                System.out.println("Message Customer " + inputUsername + " [1] or Cancel [0]");
+                                System.out.println("Message Customer " + inputUsername + " [1], Block Customer [2], " +
+                                        "Edit Conversation [3], Delete a Message [4], or Cancel [0]");
                                 int newResponse = input.nextInt();
                                 input.nextLine();
 
@@ -218,9 +277,33 @@ public class MainCopy {
                                     System.out.println("Enter Message:");
                                     message.sendMessage(input.nextLine());
 
+                                } else if (newResponse == 3) {
+                                    Message message = new Message(user, inputUsername);
+                                    message.printMessageHistoryWithIndeces();
+
+                                    System.out.println("Select a line to edit: ");
+                                    int lineToEdit = input.nextInt();
+                                    input.nextLine();
+
+                                    System.out.println("Enter the new message: ");
+                                    String newMessage = input.nextLine();
+
+                                    message.editMessage(lineToEdit, newMessage);
+
+                                } else if (newResponse == 4) {
+                                    Message message = new Message(user, inputUsername);
+                                    message.printMessageHistoryWithIndeces();
+
+                                    System.out.println("Select a line to delete: ");
+                                    int lineToDelete = input.nextInt();
+                                    input.nextLine();
+
+                                    message.deleteMessage(lineToDelete);
+
                                 } else if (newResponse == 0) {
                                     System.out.println("Messaging quit successfully.");
                                     break outer;
+
                                 } else {
                                     System.out.println("Invalid Input. Please try again.");
                                 }
