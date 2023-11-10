@@ -7,6 +7,7 @@ import java.util.Scanner;
 /**
  * notes:
  * figure out how to keep code running even after exception (while loop around the whole try-catch?)
+ * blocking has not been implemented yet
  */
 
 public class MainCopy {
