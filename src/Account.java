@@ -219,6 +219,10 @@ public class Account {
                 }
             } while (accountFound);
 
+            // Create user's cantSee and blockedBy txt files
+            writeBlockedByList(getUsername());
+            writeCantSeeList(getUsername());
+
             // Add new account info to accounts.txt
             FileOutputStream fos = new FileOutputStream("accounts.txt", true);
             PrintWriter pw = new PrintWriter(fos);
