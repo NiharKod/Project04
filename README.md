@@ -20,9 +20,9 @@
 - Account is the super class to the customer and seller classes. 
 
 ### `Customer.java`
-- Functionality
+- The customer class is the child class of the Account class. It inherits the fields and the methods of the parent class. The customer class has specific methods such as view stores which lists all of the stores, search seller, and store to seller which finds the respective seller from a store.  
 - Testing done
-- Relationship to other classes
+- Customer is a child of account and is referenced when creating and or logging into an account. 
 
 ### `Seller.java`
 - Functionality
