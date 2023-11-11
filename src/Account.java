@@ -295,6 +295,30 @@ public class Account {
         return customers;
     }
 
+    //calls getCustomerList and checks for invisibility
+    public ArrayList<String> getCustomerListInvis() throws IOException {
+        ArrayList<String> customerList = this.getCustomerList();
+
+        File f = new File(this.username + "CantSeeList.txt");
+        FileReader fr = new FileReader(f);
+        BufferedReader bfr = new BufferedReader(fr);
+        ArrayList<String> cantSeeList = new ArrayList<>();
+
+        String line = bfr.readLine();
+        while (line != null) {
+            cantSeeList.add(line);
+            line = bfr.readLine();
+        }
+
+        if (cantSeeList != null) {
+            for (int i = 0; i < cantSeeList.size(); i++) {
+                customerList.remove(cantSeeList.get(i));
+            }
+        }
+
+        return customerList;
+    }
+
     // Creates an arrayList of all sellers
     public ArrayList<String> getSellerList() throws IOException {
         BufferedReader br = new BufferedReader(new FileReader("accounts.txt"));
@@ -307,8 +331,6 @@ public class Account {
         br.close();
         return sellers;
     }
-
-    // Creates an arrayList of stores
 
     public String toString() {
         return String.format("(Account)<Username=%s,Email=%s,Password=%s,Role=%s>", username, email, password, role);

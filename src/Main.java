@@ -225,7 +225,7 @@ public class Main {
                             //view customers list and choose one of the customers to message
                             if (response == 1) {
                                 System.out.println("List of all customers:");
-                                for (String customer : user.getCustomerList()) {
+                                for (String customer : user.getCustomerListInvis()) {
                                     System.out.println(customer);
                                 }
 
