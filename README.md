@@ -25,11 +25,21 @@
 - Customer is a child of account and is referenced when creating and or logging into an account. 
 
 ### `Seller.java`
-- Functionality
+- The seller class is a child of the Account class. It inherits the fields and the methods of the Account class. The Seller class has many unique methods such as create store which creates as store and adds it to the list of stores, view customer which returns all of the customers available to message, search customer which returns true or false if there is a given customer, and get stores which returns a list of all of the stores. 
 - Testing done
-- Relationship to other classes
+- Seller is a child of account and is referenced when creating and or logging into an account. Many of hte methods are referenced within the main class. 
 ### `Message.java`
 - Functionality
 - Testing done
 - Relationship to other classes
+### `Statistics.java`
+- Functionality
+- Testing done
+- Relationship to other classes
+### `WrongInputException.java`
+- Functionality
+- Testing done
+- Relationship to other classes
+
+
 
