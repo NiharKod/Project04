@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.FileStore;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public class Statistics {
@@ -29,12 +32,17 @@ public class Statistics {
         displayStoresByMessagesSent(messages, customerUsername);
     }
 
-    // Method to load messages for a specific user
-    private static List<String> loadMessages(String username) throws IOException {
-        List<String> messages = new ArrayList<>();
-        String fileName = username + "-messages.txt";
 
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+
+    // Method to load messages for a specific user
+    public static List<String> loadMessages(String username) throws IOException {
+        String fileName = "/Users/sandesh/IdeaProjects/Project0004";
+        List<String> filemameList = new ArrayList<>();
+        FileStore a = Files.getFileStore(Path.of(fileName));
+        List<String> messages = new ArrayList<>();
+
+        FileReader fileReader = new FileReader(fileName);
+        try (BufferedReader br = new BufferedReader(new FileReader(String.valueOf(fileReader)))) {
             String line;
             while ((line = br.readLine()) != null) {
                 messages.add(line);

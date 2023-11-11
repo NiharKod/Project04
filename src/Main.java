@@ -27,7 +27,7 @@ public class Main {
                         user.getRole());
 
                 outer: while (true) {
-                    System.out.println("View Stores List [1], Search for a Seller [2], or Cancel [0]?");
+                    System.out.println("View Stores List [1], Search for a Seller [2], or Cancel [0]?, or History[3]");
                     int response = input.nextInt();
                     input.nextLine();
 
@@ -198,7 +198,10 @@ public class Main {
                     } else if (response == 0) {
                         System.out.println("System quit successfully.");
                         break;
-                    } else {
+                    } else if(response == 3){
+                        Statistics statistics = new Statistics();
+            //            statistics.loadMessages();
+                    }else {
                         System.out.println("Invalid input. Please try again.\n");
                     }
                 }
