@@ -51,11 +51,24 @@ public class MainCopy {
 
                                 String sellerToMessage = customer.storeToSeller(storeToMesssage);
 
-                                Message message = new Message(customer, sellerToMessage);
-                                message.printMessageHistory();
+                                if (user.checkIfBlocked(sellerToMessage)) {
+                                    System.out.println("You have been blocked by this user and cannot message!");
+                                } else {
+                                    Message message = new Message(customer, sellerToMessage);
+                                    message.printMessageHistory();
 
-                                System.out.println("Enter Message:");
-                                message.sendMessage(input.nextLine());
+                                    System.out.println("Enter Message:");
+                                    message.sendMessage(input.nextLine());
+                                }
+
+                            } else if (newResponse == 2) {
+                                System.out.println("Select a store to block: ");
+                                String storeToBlock = input.nextLine();
+
+                                String sellerToBlock = customer.storeToSeller(storeToBlock);
+
+                                user.writeBlockedByList(sellerToBlock);
+                                System.out.println("You have blocked user " + sellerToBlock + "!");
 
                             } else if (newResponse == 3) {
                                 System.out.println("Select a store to edit conversation history: ");
@@ -115,11 +128,22 @@ public class MainCopy {
                                 input.nextLine();
 
                                 if (newResponse == 1) {
-                                    Message message = new Message(user, sellerToSearch);
-                                    message.printMessageHistory();
+                                    if (user.checkIfBlocked(sellerToSearch)) {
+                                        System.out.println("You have been blocked by this user and cannot message!");
+                                    } else {
+                                        Message message = new Message(user, sellerToSearch);
+                                        message.printMessageHistory();
 
-                                    System.out.println("Enter Message:");
-                                    message.sendMessage(input.nextLine());
+                                        System.out.println("Enter Message:");
+                                        message.sendMessage(input.nextLine());
+                                    }
+
+                                } else if (newResponse == 2) {
+                                    System.out.println("Select a user to block: ");
+                                    String userToBlock = input.nextLine();
+
+                                    user.writeBlockedByList(userToBlock);
+                                    System.out.println("You have blocked user " + userToBlock + "!");
 
                                 } else if (newResponse == 3) {
                                     Message message = new Message(user, sellerToSearch);
@@ -198,15 +222,18 @@ public class MainCopy {
                                 System.out.println("Select a user to message: ");
                                 String userToMessage = input.nextLine();
 
-                                Message message = new Message(user, userToMessage);
-                                message.printMessageHistory();
+                                if (user.checkIfBlocked(userToMessage)) {
+                                    System.out.println("You have been blocked by this user and cannot message!");
+                                } else {
+                                    Message message = new Message(user, userToMessage);
+                                    message.printMessageHistory();
 
-                                System.out.println("Enter Message:");
-                                message.sendMessage(input.nextLine());
+                                    System.out.println("Enter Message:");
+                                    message.sendMessage(input.nextLine());
+                                }
 
                                 //add to blocking list
                             } else if (newResponse == 2) {
-                                //todo: fix blocking
                                 System.out.println("Select a user to block: ");
                                 String userToBlock = input.nextLine();
 
@@ -271,11 +298,19 @@ public class MainCopy {
                                 input.nextLine();
 
                                 if (newResponse == 1) {
-                                    Message message = new Message(user, inputUsername);
-                                    message.printMessageHistory();
+                                    if (user.checkIfBlocked(inputUsername)) {
+                                        System.out.println("You have been blocked by this user and cannot message!");
+                                    } else {
+                                        Message message = new Message(user, inputUsername);
+                                        message.printMessageHistory();
 
-                                    System.out.println("Enter Message:");
-                                    message.sendMessage(input.nextLine());
+                                        System.out.println("Enter Message:");
+                                        message.sendMessage(input.nextLine());
+                                    }
+
+                                } else if (newResponse == 2) {
+                                    user.writeBlockedByList(inputUsername);
+                                    System.out.println("You have blocked user " + inputUsername + "!");
 
                                 } else if (newResponse == 3) {
                                     Message message = new Message(user, inputUsername);

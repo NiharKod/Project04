@@ -321,10 +321,22 @@ public class Account {
         pw.flush();
     }
 
-    public void checkIfBlocked() throws FileNotFoundException {
-        File f = new File(this.getUsername() + "BlockedByList.txt");
+    //method checks if user has a blocked-by list, and if the person they want to message is on the list
+    //if person they want to message is on their blocked-by list, return true, thus they are blocked and
+    //won't be allowed to message the person
+    public boolean checkIfBlocked(String username) throws IOException {
+        File f = new File(this.username + "BlockedByList.txt");
         FileReader fr = new FileReader(f);
         BufferedReader bfr = new BufferedReader(fr);
+        ArrayList<String> blockedByList = new ArrayList<>();
+
+        String line = bfr.readLine();
+        while (line != null) {
+            blockedByList.add(line);
+            line = bfr.readLine();
+        }
+
+        return f.exists() && blockedByList.contains(username);
     }
 
     //if user1 is on user2's invisible-to list, user1 cannot search for user2 (it will return no user found)
