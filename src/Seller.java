@@ -98,15 +98,8 @@ public class Seller extends Account {
     }
 
     public void viewCustomers() throws IOException {
-        File f = new File("accounts.txt");
-        br = new BufferedReader(new FileReader(f));
-
-        String line = br.readLine();
-        while (line != null) {
-            String[] row = line.split(",");
-            if (row[3].equals("Customer")) {
-                System.out.println(row[0]);
-            }
+        for (String customer : getCustomerList()) {
+            System.out.println(customer);
         }
     }
 
