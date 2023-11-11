@@ -1,8 +1,2 @@
 username,Store1...Store(i)
-JohnDoe,John-Mart,Doe's Sledding Goods
-newUSER,store1,store2,store3
-Carlos,CarlosWorld
-Carlos2,CarlosWorld2
-Jerry,Cheese-Mart
-Iroh,Iroh's Fireball Tea
-TestUser1,TestStore1,TestStore2
+JaneDoe,Jane's Goods

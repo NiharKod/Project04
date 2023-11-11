@@ -16,7 +16,7 @@ public class RunLocalTest {
         seller.viewCustomers();
         System.out.println();
         System.out.println("Found User2?: " + seller.searchCustomer("TestUser2"));
-        System.out.println();
+        System.out.println("-----------------------------------");
         System.out.println();
 
         Customer customer = new Customer(account2);
