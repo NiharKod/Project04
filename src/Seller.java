@@ -6,6 +6,7 @@ public class Seller extends Account {
     ArrayList<String> stores = new ArrayList<>();
 
     public static ArrayList<String> allStores = new ArrayList<>();
+    public static ArrayList<ArrayList<String>> storeManager = new ArrayList<>();
     PrintWriter pw;
     BufferedReader br;
 
@@ -45,23 +46,7 @@ public class Seller extends Account {
     // Create store
     public boolean createStore(String storeName) throws IOException {
         if (!getStores().contains(storeName)) {
-            ArrayList<ArrayList<String>> storeManager = new ArrayList<>();
-
-            // Read through storemanager.txt to convert information to a 2D arrayList called storeManager
-            br = new BufferedReader(new FileReader("storemanager.txt"));
-            String line = br.readLine();
-            while (line != null) {
-                String[] row = line.split(",");
-                ArrayList<String> sellerInfo = new ArrayList<>();
-
-                for (int i = 0; i < row.length; i++) {
-                    sellerInfo.add(row[i]);
-                }
-
-                storeManager.add(sellerInfo);
-                line = br.readLine();
-            }
-            br.close();
+            populateStoreManagerList();
 
             boolean foundStore = false;
 
@@ -119,5 +104,23 @@ public class Seller extends Account {
         return allStores;
     }
 
+    public void populateStoreManagerList() throws IOException {
+        storeManager = new ArrayList<>();
 
+        // Read through storemanager.txt to convert information to a 2D arrayList called storeManager
+        br = new BufferedReader(new FileReader("storemanager.txt"));
+        String line = br.readLine();
+        while (line != null) {
+            String[] row = line.split(",");
+            ArrayList<String> sellerInfo = new ArrayList<>();
+
+            for (int i = 0; i < row.length; i++) {
+                sellerInfo.add(row[i]);
+            }
+
+            storeManager.add(sellerInfo);
+            line = br.readLine();
+        }
+        br.close();
+    }
 }
