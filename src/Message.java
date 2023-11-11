@@ -21,7 +21,7 @@ public class Message {
                 this.to.setRole(line.split(",")[3]);
             }
         }
-        if (this.to == null) {
+        if (this.to.getUsername() == null) {
             throw new CantMessageException(from.getRole());
         }
         //creating the file for messaging ot finding it if it is there already.
