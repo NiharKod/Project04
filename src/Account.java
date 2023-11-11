@@ -339,13 +339,29 @@ public class Account {
         return f.exists() && blockedByList.contains(username);
     }
 
-    //if user1 is on user2's invisible-to list, user1 cannot search for user2 (it will return no user found)
-    public void writeInvisibleToList(String username) throws FileNotFoundException {
-        File f = new File(this.username + "InvisibleToList.txt");
+    //if user1 is on user2's cant-see list, user2 will not be able to search for user1
+    public void writeCantSeeList(String username) throws FileNotFoundException {
+        File f = new File(username + "CantSeeList.txt");
         FileOutputStream fos = new FileOutputStream(f, true);
         PrintWriter pw = new PrintWriter(fos);
 
-        pw.println(username);
+        pw.println(this.username);
         pw.flush();
+    }
+
+    //if returns true, means the user is not allowed to see the other person's usernmae
+    public boolean checkIfCantSee(String username) throws IOException {
+        File f = new File(this.username + "CantSeeList.txt");
+        FileReader fr = new FileReader(f);
+        BufferedReader bfr = new BufferedReader(fr);
+        ArrayList<String> cantSeeList = new ArrayList<>();
+
+        String line = bfr.readLine();
+        while (line != null) {
+            cantSeeList.add(line);
+            line = bfr.readLine();
+        }
+
+        return f.exists() && cantSeeList.contains(username);
     }
 }

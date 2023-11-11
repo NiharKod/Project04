@@ -41,7 +41,7 @@ public class MainCopy {
                         while (true) {
                             //blocking would be implemented here as 'Block User [2]'
                             System.out.println("\nMessage Store [1], Block Store [2], Edit Conversation [3], " +
-                                    "Delete a Message [4], or Cancel [0]");
+                                    "Delete a Message [4], Become Invisible [5], or Cancel [0]");
                             int newResponse = input.nextInt();
                             input.nextLine();
 
@@ -103,6 +103,15 @@ public class MainCopy {
 
                                 message.deleteMessage(lineToDelete);
 
+                            } else if (newResponse == 5) {
+                                System.out.println("Select a store to become invisible to: ");
+                                String storeInvisible = input.nextLine();
+
+                                String sellerInvisible = customer.storeToSeller(storeInvisible);
+
+                                user.writeCantSeeList(sellerInvisible);
+                                System.out.println("You have become invisible to " + sellerInvisible + "!");
+
                             } else if (newResponse == 0) {
                                 System.out.println("Messaging quit successfully.");
                                 break outer;
@@ -120,10 +129,17 @@ public class MainCopy {
                         // Call the searchSeller method with the entered seller's name
                         boolean foundSeller = customer.searchSeller(sellerToSearch);
 
+                        //if the person they want to message is invisible to them, make foundseller false
+                        //so that they can't message
+                        if (user.checkIfCantSee(sellerToSearch)) {
+                            foundSeller = false;
+                        }
+
                         while (true) {
                             if (foundSeller) {
                                 System.out.println("Message Seller " + sellerToSearch + " [1], Block Seller [2], " +
-                                        "Edit Conversation [3], Delete a Message [4], or Cancel [0]");
+                                        "Edit Conversation [3], Delete a Message [4], Become Invisible [5], " +
+                                        "or Cancel [0]");
                                 int newResponse = input.nextInt();
                                 input.nextLine();
 
@@ -167,6 +183,10 @@ public class MainCopy {
                                     input.nextLine();
 
                                     message.deleteMessage(lineToDelete);
+
+                                } else if (newResponse == 5) {
+                                    user.writeCantSeeList(sellerToSearch);
+                                    System.out.println("You have become invisible to " + sellerToSearch + "!");
 
                                 } else if (newResponse == 0) {
                                     System.out.println("Messaging quit successfully.");
@@ -214,7 +234,7 @@ public class MainCopy {
                         while (true) {
                             //blocking would be implemented here as 'or Block User [2]'
                             System.out.println("\nMessage User [1], Block User [2], Edit Conversation [3], " +
-                                    "Delete a Message [4], or Cancel [0]");
+                                    "Delete a Message [4], Become Invisible [5], or Cancel [0]");
                             int newResponse = input.nextInt();
                             input.nextLine();
 
@@ -269,6 +289,13 @@ public class MainCopy {
 
                                 message.deleteMessage(lineToDelete);
 
+                            } else if (newResponse == 5) {
+                                System.out.println("Select a user to become invisible to: ");
+                                String userInvisible = input.nextLine();
+
+                                user.writeCantSeeList(userInvisible);
+                                System.out.println("You have become invisible to " + userInvisible + "!");
+
                             } else if (newResponse == 0) {
                                 System.out.println("Messaging quit successfully.");
                                 break outer;
@@ -287,13 +314,20 @@ public class MainCopy {
                         Seller seller = new Seller(user);
                         boolean search = seller.searchCustomer(inputUsername);
 
+                        //if the person they want to message is invisible to them, make search false
+                        //so that they can't message
+                        if (user.checkIfCantSee(inputUsername)) {
+                            search = false;
+                        }
+
                         //looping will implement until user types [0] to cancel
                         while (true) {
                             //customer username is found, can message
                             if (search) {
                                 //blocking would be implemented here as 'or block customer [2]'
                                 System.out.println("Message Customer " + inputUsername + " [1], Block Customer [2], " +
-                                        "Edit Conversation [3], Delete a Message [4], or Cancel [0]");
+                                        "Edit Conversation [3], Delete a Message [4], Become Invisible [5], " +
+                                        "or Cancel [0]");
                                 int newResponse = input.nextInt();
                                 input.nextLine();
 
@@ -334,6 +368,10 @@ public class MainCopy {
                                     input.nextLine();
 
                                     message.deleteMessage(lineToDelete);
+
+                                } else if (newResponse == 5) {
+                                    user.writeCantSeeList(inputUsername);
+                                    System.out.println("You have become invisible to " + inputUsername + "!");
 
                                 } else if (newResponse == 0) {
                                     System.out.println("Messaging quit successfully.");
