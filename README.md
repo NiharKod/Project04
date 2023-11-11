@@ -29,17 +29,17 @@
 - Testing done
 - Seller is a child of account and is referenced when creating and or logging into an account. Many of hte methods are referenced within the main class. 
 ### `Message.java`
-- Functionality
+- Message is the primary class which handles all of the messaging actions. It allows the user to start a new message with another user, send a message which a specific text, print the message history from the current conversation, print history with indeces on a given message, edit a particular message which will edit both sides of the conversation, and finally deleting a message which will only delete it on the side of the user who has sent the delete command. 
 - Testing done
-- Relationship to other classes
+- Message is utilized in the main method. Accounts are referenced in the message class as well.
 ### `Statistics.java`
 - Functionality
 - Testing done
 - Relationship to other classes
 ### `WrongInputException.java`
-- Functionality
+- This is an exception which is thrown when the user tries to message someone with the same role or someone that does not exist.
 - Testing done
-- Relationship to other classes
+- Utilized in message class. 
 
 
 
