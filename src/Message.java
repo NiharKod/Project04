@@ -197,13 +197,26 @@ public class Message {
             }
         }
 
-        System.out.println("\nMost common words in overall messages:");
-        wordCountMap.entrySet().stream().max(Map.Entry.comparingByValue()).stream()
-                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-                .limit(5)
-                .forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue() + " occurrences"));
+        final int[] maxOccurrences = {0};
+        final List<String> mostCommonWords = new ArrayList<>();
 
+        for (Map.Entry<String, Integer> entry : wordCountMap.entrySet()) {
+            int occurrences = entry.getValue();
+            if (occurrences > maxOccurrences[0]) {
+                maxOccurrences[0] = occurrences;
+                mostCommonWords.clear();
+                mostCommonWords.add(entry.getKey());
+            } else if (occurrences == maxOccurrences[0]) {
+                mostCommonWords.add(entry.getKey());
+            }
+        }
+
+        System.out.println("\nMost common words in overall messages with " + maxOccurrences[0] + " occurrences:");
+        mostCommonWords.forEach(word -> System.out.println(word + ": " + maxOccurrences[0] + " occurrences"));
     }
+
+
+
     public void displayLeastCommonWords() throws IOException {
         List<String> messages = new ArrayList<>();
         BufferedReader brFrom = new BufferedReader(new FileReader(from.getUsername() + "-"
@@ -223,12 +236,26 @@ public class Message {
             }
         }
 
-        System.out.println("\nLeast common words in overall messages");
-        wordCountMap.entrySet().stream().min(Map.Entry.comparingByValue()).stream()
-                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-                .limit(5)
-                .forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue() + " occurrences"));
+        final int[] minOccurrences = {Integer.MAX_VALUE};
+        final List<String> leastCommonWords = new ArrayList<>();
+
+        for (Map.Entry<String, Integer> entry : wordCountMap.entrySet()) {
+            int occurrences = entry.getValue();
+            if (occurrences < minOccurrences[0]) {
+                minOccurrences[0] = occurrences;
+                leastCommonWords.clear();
+                leastCommonWords.add(entry.getKey());
+            } else if (occurrences == minOccurrences[0]) {
+                leastCommonWords.add(entry.getKey());
+            }
+        }
+
+        System.out.println("\nLeast common words in overall messages with " + minOccurrences[0] + " occurrences:");
+        leastCommonWords.forEach(word -> System.out.println(word + ": " + minOccurrences[0] + " occurrences"));
     }
+
+
+
     private static String extractCustomerFromMessage(String message) {
         // Assuming the format is (Role)Username: Message
         int count = message.trim().indexOf(':');
