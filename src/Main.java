@@ -199,6 +199,7 @@ public class Main {
                                             System.out.println(SEARCH_USERNAME);
                                             toSearch = input.nextLine();
 
+
                                             // Call the searchCustomer method with the entered customer's name
                                             foundUser = seller.searchCustomer(toSearch);
 
@@ -212,6 +213,8 @@ public class Main {
                                             System.out.println(TRY_AGAIN);
                                             String again = input.nextLine().toUpperCase();
 
+
+
                                             // Ask user if they'd like to try again? If Y continue, else quit.
                                             if (!again.equals("Y")) {
                                                 break;
@@ -219,9 +222,14 @@ public class Main {
                                         } while (true);    // Ensures valid user or cancel
                                         break;
 
-                                    case 3:    // View Statistics
+                                    case 3:// View Statistics
+
+                                        System.out.println(SEARCH_USERNAME);
+                                        toSearch = input.nextLine();
+
                                         System.out.println("Printing out statistics");
-                                        getStats(user, user.getUsername());
+                                        getStats(user, toSearch);
+
                                         break;
 
                                     case 4:    // Create Store
@@ -357,17 +365,42 @@ public class Main {
     }
 
     private static void getStats(Account user, String inputUsername) throws IOException, CantMessageException {
-        System.out.println("Select Get Chat History [1], Get most common word occurrences [2] ");
-        Scanner input = new Scanner(System.in);
-        int response = input.nextInt();
-        if (response == 1) {
+        do {
+            int choice = 0;
+            String response = "";
+            Scanner input = new Scanner(System.in);
+            do {
+                System.out.println("Select Get Chat History [1], Get most common word occurrences [2], Get least common word occurrences [3], cancel [0] ");
 
-            Message message = new Message(user, inputUsername);
-            message.printMessageHistory();
-        } else if (response == 2) {
-            Message message = new Message(user, inputUsername);
-            message.displayMostCommonWords();
-        }
+                // Saves input and checks if it is a valid integer input
+                response = input.nextLine();
+                try {
+                    choice = Integer.parseInt(response);
+                    if (choice > 3 || choice < 0) {
+                        System.out.println(INVALID_NUMBER_OPTION);
+                    } else {
+                        break;
+                    }
+                } catch (Exception e) {
+                    System.out.println(INVALID_NUMBER_OPTION);
+                }
+            } while (true);    // Ensures valid choice
+
+            if (choice == 1) {
+
+                Message message = new Message(user, inputUsername);
+                message.printMessageHistory();
+            } else if (choice == 2) {
+                Message message = new Message(user, inputUsername);
+                message.displayMostCommonWords();
+            } else if (choice == 0) {
+                break;
+            } else if (choice == 3) {
+                Message message = new Message(user, inputUsername);
+                message.displayLeastCommonWords();
+            }
+        } while (true);
+
 
     }
 

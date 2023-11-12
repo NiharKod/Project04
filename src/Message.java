@@ -202,6 +202,32 @@ public class Message {
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                 .limit(5)
                 .forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue() + " occurrences"));
+
+    }
+    public void displayLeastCommonWords() throws IOException {
+        List<String> messages = new ArrayList<>();
+        BufferedReader brFrom = new BufferedReader(new FileReader(from.getUsername() + "-"
+                + this.to.getUsername() + ".txt"));
+        String line;
+
+        while ((line = brFrom.readLine()) != null) {
+            messages.add(line);
+        }
+        Map<String, Integer> wordCountMap = new HashMap<>();
+
+        for (String message : messages) {
+            String removeNames = extractCustomerFromMessage(message);
+            String[] words = removeNames.split("\\s+");
+            for (String word : words) {
+                wordCountMap.put(word, wordCountMap.getOrDefault(word, 0) + 1);
+            }
+        }
+
+        System.out.println("\nLeast common words in overall messages");
+        wordCountMap.entrySet().stream().min(Map.Entry.comparingByValue()).stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .limit(5)
+                .forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue() + " occurrences"));
     }
     private static String extractCustomerFromMessage(String message) {
         // Assuming the format is (Role)Username: Message
