@@ -1,6 +1,10 @@
 import java.awt.print.PrinterAbortException;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Message class
  *
@@ -172,5 +176,38 @@ public class Message {
         printMessageHistory();
         pwFrom.close();
         brFrom.close();
+    }
+
+    public void displayMostCommonWords() throws IOException {
+        List<String> messages = new ArrayList<>();
+        BufferedReader brFrom = new BufferedReader(new FileReader(from.getUsername() + "-"
+                + this.to.getUsername() + ".txt"));
+        String line;
+
+        while ((line = brFrom.readLine()) != null) {
+            messages.add(line);
+        }
+        Map<String, Integer> wordCountMap = new HashMap<>();
+
+        for (String message : messages) {
+            String removeNames = extractCustomerFromMessage(message);
+            String[] words = removeNames.split("\\s+");
+            for (String word : words) {
+                wordCountMap.put(word, wordCountMap.getOrDefault(word, 0) + 1);
+            }
+        }
+
+        System.out.println("\nMost common words in overall messages:");
+        wordCountMap.entrySet().stream().max(Map.Entry.comparingByValue()).stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .limit(5)
+                .forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue() + " occurrences"));
+    }
+    private static String extractCustomerFromMessage(String message) {
+        // Assuming the format is (Role)Username: Message
+        int count = message.trim().indexOf(':');
+        String concatMessages = message.substring(count+1).trim();
+        //   return concatMessages.split("\\)")[1].split(":")[0];
+        return concatMessages.split("\\)")[0];
     }
 }
