@@ -1,12 +1,2 @@
 Username,Email,Password,Role
-JohnDoe,jdoe@gmail.com,Password123,Seller
-FaeKname,fkname@yahoo.com,Uncrackable22,Customer
-niharkod,nihar@gmail.com,nkodkani04,Customer
-newUSER,new@gmail.com,fancybook312,Seller
-Nangba,nangba.konyak@yahoo.com,RealPasswordsOnly,Customer
-Carlos,carlos@gmail.com,CreativePassword123,Seller
-Carlos2,carlos2@gmail.com,CreativerPassword,Seller
-Jerry,reallyLikesCheese@gmail.com,TomAndJerry!,Seller
-Iroh,tea@outlook.com,Dragon@TheWest,Seller
-TestUser1,Test1@gmail.com,Test@1,Seller
-TestUser2,Test2@gmail.com,Test@2,Customer
+JaneDoe,jane.doe@gmail.com,Password@123,Seller

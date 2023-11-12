@@ -219,6 +219,10 @@ public class Account {
                 }
             } while (accountFound);
 
+            // Create user's cantSee and blockedBy txt files
+            writeBlockedByList(getUsername());
+            writeCantSeeList(getUsername());
+
             // Add new account info to accounts.txt
             FileOutputStream fos = new FileOutputStream("accounts.txt", true);
             PrintWriter pw = new PrintWriter(fos);
@@ -291,6 +295,30 @@ public class Account {
         return customers;
     }
 
+    //calls getCustomerList and checks for invisibility
+    public ArrayList<String> getCustomerListInvis() throws IOException {
+        ArrayList<String> customerList = this.getCustomerList();
+
+        File f = new File(this.username + "CantSeeList.txt");
+        FileReader fr = new FileReader(f);
+        BufferedReader bfr = new BufferedReader(fr);
+        ArrayList<String> cantSeeList = new ArrayList<>();
+
+        String line = bfr.readLine();
+        while (line != null) {
+            cantSeeList.add(line);
+            line = bfr.readLine();
+        }
+
+        if (cantSeeList != null) {
+            for (int i = 0; i < cantSeeList.size(); i++) {
+                customerList.remove(cantSeeList.get(i));
+            }
+        }
+
+        return customerList;
+    }
+
     // Creates an arrayList of all sellers
     public ArrayList<String> getSellerList() throws IOException {
         BufferedReader br = new BufferedReader(new FileReader("accounts.txt"));
@@ -303,8 +331,6 @@ public class Account {
         br.close();
         return sellers;
     }
-
-    // Creates an arrayList of stores
 
     public String toString() {
         return String.format("(Account)<Username=%s,Email=%s,Password=%s,Role=%s>", username, email, password, role);
@@ -321,19 +347,47 @@ public class Account {
         pw.flush();
     }
 
-    public void checkIfBlocked() throws FileNotFoundException {
-        File f = new File(this.getUsername() + "BlockedByList.txt");
+    //method checks if user has a blocked-by list, and if the person they want to message is on the list
+    //if person they want to message is on their blocked-by list, return true, thus they are blocked and
+    //won't be allowed to message the person
+    public boolean checkIfBlocked(String username) throws IOException {
+        File f = new File(this.username + "BlockedByList.txt");
         FileReader fr = new FileReader(f);
         BufferedReader bfr = new BufferedReader(fr);
+        ArrayList<String> blockedByList = new ArrayList<>();
+
+        String line = bfr.readLine();
+        while (line != null) {
+            blockedByList.add(line);
+            line = bfr.readLine();
+        }
+
+        return f.exists() && blockedByList.contains(username);
     }
 
-    //if user1 is on user2's invisible-to list, user1 cannot search for user2 (it will return no user found)
-    public void writeInvisibleToList(String username) throws FileNotFoundException {
-        File f = new File(this.username + "InvisibleToList.txt");
+    //if user1 is on user2's cant-see list, user2 will not be able to search for user1
+    public void writeCantSeeList(String username) throws FileNotFoundException {
+        File f = new File(username + "CantSeeList.txt");
         FileOutputStream fos = new FileOutputStream(f, true);
         PrintWriter pw = new PrintWriter(fos);
 
-        pw.println(username);
+        pw.println(this.username);
         pw.flush();
+    }
+
+    //if returns true, means the user is not allowed to see the other person's usernmae
+    public boolean checkIfCantSee(String username) throws IOException {
+        File f = new File(this.username + "CantSeeList.txt");
+        FileReader fr = new FileReader(f);
+        BufferedReader bfr = new BufferedReader(fr);
+        ArrayList<String> cantSeeList = new ArrayList<>();
+
+        String line = bfr.readLine();
+        while (line != null) {
+            cantSeeList.add(line);
+            line = bfr.readLine();
+        }
+
+        return f.exists() && cantSeeList.contains(username);
     }
 }
