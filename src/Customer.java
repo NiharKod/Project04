@@ -6,6 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Customer class
+ *
+ * <p>Purdue University -- CS18000 -- Fall 2023 -- Project 04 -- </p>
+ *
+ * @author Nihar Kodkani, Nangba Konyak, Isabelle Lee, Sandesh Reddy
+ * @version November 12th, 2023
+ */
 public class Customer extends Account {
     private String role;
     private String assignedSeller;
@@ -28,6 +36,7 @@ public class Customer extends Account {
         this.assignedSeller = null; // Initialize assignedSeller to null
         this.storeNames = new ArrayList<>(); // Initialize the storeNames list
     }
+
     // Method to view all stores from "storemanager.txt" file
     public void viewStores() {
         try (BufferedReader br = new BufferedReader(new FileReader("storemanager.txt"))) {

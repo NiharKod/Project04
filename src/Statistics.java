@@ -3,6 +3,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Statistics class
+ *
+ * <p>Purdue University -- CS18000 -- Fall 2023 -- Project 04 -- </p>
+ *
+ * @author Nihar Kodkani, Nangba Konyak, Isabelle Lee, Sandesh Reddy
+ * @version November 12th, 2023
+ */
 public class Statistics {
     // Method for Sellers to view dashboard statistics
     public static void viewSellerDashboard(String sellerUsername) throws IOException {
