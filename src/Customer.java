@@ -29,24 +29,6 @@ public class Customer extends Account {
         this.storeNames = new ArrayList<>(); // Initialize the storeNames list
     }
 
-    // Method to load user accounts and their roles from "accounts.txt" file
-    public void loadUserAccounts() {
-        try (BufferedReader br = new BufferedReader(new FileReader("accounts.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] userData = line.split(",");
-                if (userData.length == 4) {
-                    String user = userData[0].trim();
-                    String role = userData[3].trim();
-                    usernames.add(user); // Add the username to the list
-                    roles.add(role); // Add the role to the list
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading user accounts from the file");
-        }
-    }
-
     // Method to view all stores from "storemanager.txt" file
     public void viewStores() {
         try (BufferedReader br = new BufferedReader(new FileReader("storemanager.txt"))) {
@@ -105,11 +87,6 @@ public class Customer extends Account {
 
         // Return an empty string if the store name is not found
         return "";
-    }
-
-
-    public String getAssignedSeller() {
-        return assignedSeller;
     }
 }
 
