@@ -371,7 +371,10 @@ public class Account {
 
             for (int i = 0; i < sellerList.size(); i++) {
                 if (sellerList.get(i).equals(lineSep[0])) {
-                    storeList.add(lineSep[1]);
+                    String[] lineSep2 = lineSep[1].split(",");
+                    for (String store : lineSep2) {
+                        storeList.add(store);
+                    }
                 }
             }
 
