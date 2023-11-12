@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.FileStore;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -12,44 +15,6 @@ import java.util.*;
  * @version November 12th, 2023
  */
 public class Statistics {
-    // Method for Sellers to view dashboard statistics
-    public static void viewSellerDashboard(String sellerUsername) throws IOException {
-        // Load message data
-        List<String> messages = loadMessages(sellerUsername);
-
-        // Display number of messages sent by each customer
-        displayMessagesByCustomer(messages);
-
-        // Display most common words in overall messages
-        displayMostCommonWords(messages);
-    }
-
-    // Method for Customers to view dashboard statistics
-    public static void viewCustomerDashboard(String customerUsername) throws IOException {
-        // Load message data
-        List<String> messages = loadMessages(customerUsername);
-
-        // Display stores by the number of messages received
-        displayStoresByMessagesReceived(messages);
-
-        // Display stores by the number of messages sent by the customer
-        displayStoresByMessagesSent(messages, customerUsername);
-    }
-
-    // Method to load messages for a specific user
-    private static List<String> loadMessages(String username) throws IOException {
-        List<String> messages = new ArrayList<>();
-        String fileName = username + "-messages.txt";
-
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                messages.add(line);
-            }
-        }
-        return messages;
-    }
-
     // Method to display number of messages sent by each customer
     private static void displayMessagesByCustomer(List<String> messages) {
         Map<String, Integer> messageCountMap = new HashMap<>();
@@ -129,9 +94,4 @@ public class Statistics {
                 .forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue() + " messages"));
     }
 
-    // Example usage:
-    public static void main(String[] args) throws IOException {
-        Statistics.viewSellerDashboard("JohnDoe");
-        Statistics.viewCustomerDashboard("FaeKname");
-    }
 }

@@ -354,4 +354,20 @@ public class Main {
             e.printStackTrace();
         }
     }
+
+    private static void getStats(Account user, String inputUsername) throws IOException, CantMessageException {
+        System.out.println("Select Get Chat History [1], Get most common word occurrences [2] ");
+        Scanner input = new Scanner(System.in);
+        int response = input.nextInt();
+        if(response == 1){
+
+            Message message = new Message(user, inputUsername);
+            message.printMessageHistory();
+        } else if (response == 2) {
+            Message message = new Message(user, inputUsername);
+            message.displayMostCommonWords();
+        }
+
+    }
+
 }
