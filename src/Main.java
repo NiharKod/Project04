@@ -8,393 +8,331 @@ import java.util.Scanner;
  */
 
 public class Main {
+    private static String CUSTOMER_CHOICES = "View Stores List [1], Search for a Seller [2], View Statistics [3]," +
+            " or Cancel [0]?";
+    private static String SELLER_CHOICES = "View Customers List [1], Search for a Customer [2], View Statistics [3], " +
+            "Create Store [4], or Cancel [0]?";
+    private static String INVALID_NUMBER_OPTION = "Invalid Input, please enter valid option!\n";
+    private static String SEARCH_USERNAME = "Please enter a username. Remember that all names are case-sensitive.";
+    private static String USER_NOT_FOUND = "The username you entered doesn't exist.";
+    private static String STORE_NOT_FOUND = "The username you entered doesn't exist.";
+    private static String TRY_AGAIN = "Would you like to try again? [Y] or [N]: ";
+    private static String MESSAGING_AND_BLOCKING_CHOICES = "Message [1], Block [2], Edit Conversation [3]," +
+            " Delete a Message [4], Become Invisible [5], or Cancel [0]";
+
+
     public static void main(String[] args) {
         try {
-            do {
+            do {    // Account Loop - Keeps entire program running
+                int choice = 0;    // Integer choice user gives to select from options
+                String toSearch = null;    // Username of user to send message to
+                boolean foundUser = false;    // Determines if user was found and can be messaged
+
                 Scanner input = new Scanner(System.in);
                 Account user = new Account();
                 user = user.accountAccess();
 
-                //System.out.println(user);
-
-                /**
-                 * below is for customer actions
-                 */
+                // Check if user was created, otherwise ask to quit or loop back to initial account access options
                 if (user.getRole() != null) {
-                    if (user.getRole().equalsIgnoreCase("customer")) {
-                        //customer actions
-                        Customer customer = new Customer(user.getUsername(), user.getEmail(), user.getPassword(),
-                                user.getRole());
 
-                        outer:
-                        while (true) {
-                            System.out.println("View Stores List [1], Search for a Seller [2], or Cancel [0]?");
-                            int response = input.nextInt();
-                            input.nextLine();
+                    // All User Actions Loop
+                    userActions:
+                    do {    // Loops through all actions after account creation, breaking returns to Account Loop
 
-                            //view stores list and choose one of the stores (sellers) to message
-                            if (response == 1) {
-                                customer.viewStores();
+                        // ROLE CHOICES
+                        roleChoices:
+                        do {    // Loops through seller/customer initial options, breaking moves to User Verification
 
-                                //looping continues forever until user chooses cancel [0]
-                                while (true) {
-                                    //blocking would be implemented here as 'Block User [2]'
-                                    System.out.println("\nMessage Store [1], Block Store [2], Edit Conversation [3], " +
-                                            "Delete a Message [4], Become Invisible [5], or Cancel [0]");
-                                    int newResponse = input.nextInt();
-                                    input.nextLine();
+                            // CUSTOMERS:
+                            if (user.getRole().equalsIgnoreCase("customer")) {
+                                Customer customer = new Customer(user);
 
-                                    if (newResponse == 1) {
-                                        System.out.println("Select a store to message: ");
-                                        String storeToMesssage = input.nextLine();
+                                // Print Initial Customer Choices
+                                do {
+                                    System.out.println(CUSTOMER_CHOICES);
 
-                                        String sellerToMessage = customer.storeToSeller(storeToMesssage);
-
-                                        if (user.checkIfBlocked(sellerToMessage)) {
-                                            System.out.println("You have been blocked by this user and cannot message!");
+                                    // Saves input and checks if it is a valid integer input
+                                    String repsonse = input.nextLine();
+                                    try {
+                                        choice = Integer.parseInt(repsonse);
+                                        if (choice > 3 || choice < 0) {
+                                            System.out.println(INVALID_NUMBER_OPTION);
                                         } else {
-                                            Message message = new Message(customer, sellerToMessage);
-                                            message.printMessageHistory();
+                                            break;
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println(INVALID_NUMBER_OPTION);
+                                    }
+                                } while (true);    // Ensures valid choice
 
-                                            System.out.println("Enter Message:");
-                                            message.sendMessage(input.nextLine());
+                                // Customer choice
+                                switch (choice) {
+                                    case 1:    // View Stores
+                                        for (String store : user.getSellerListInvis()) {
+                                            System.out.println(store);
                                         }
 
-                                    } else if (newResponse == 2) {
-                                        System.out.println("Select a store to block: ");
-                                        String storeToBlock = input.nextLine();
+                                        // USER VERIFICATION
+                                        do {
+                                            System.out.println("Please enter store name you would like to " +
+                                                    "interact with: ");
+                                            String storeSearch = input.nextLine();
 
-                                        String sellerToBlock = customer.storeToSeller(storeToBlock);
+                                            // Change storeSearch to its corresponding Seller
+                                            toSearch = customer.storeToSeller(storeSearch);
 
-                                        user.writeBlockedByList(sellerToBlock);
-                                        System.out.println("You have blocked user " + sellerToBlock + "!");
+                                            // Check if seller list contains searched seller
+                                            foundUser = customer.getSellerList().contains(toSearch);
 
-                                    } else if (newResponse == 3) {
-                                        System.out.println("Select a store to edit conversation history: ");
-                                        String storeToEdit = input.nextLine();
+                                            // Offer loop or quit if user not found, or if user is invisible
+                                            if (!foundUser || customer.checkIfCantSee(toSearch)) {
+                                                System.out.println(USER_NOT_FOUND);
 
-                                        String sellerToEdit = customer.storeToSeller(storeToEdit);
+                                                // Ask user if they'd like to try again? If Y continue, else quit.
+                                                System.out.println(TRY_AGAIN);
+                                                String again = input.nextLine().toUpperCase();
+                                                if (!again.equals("Y")) {
+                                                    break;
+                                                }
+                                            } else if (foundUser) {
+                                                break roleChoices;
+                                            }
+                                        } while (true);    // User existence verifier
+                                        break;
 
-                                        Message message = new Message(user, sellerToEdit);
-                                        message.printMessageHistoryWithIndeces();
+                                    case 2:    // Search for Seller
+                                        do {
+                                            System.out.println(SEARCH_USERNAME);
+                                            toSearch = input.nextLine();
 
-                                        System.out.println("Select a line to edit: ");
-                                        int lineToEdit = input.nextInt();
-                                        input.nextLine();
+                                            // Call the searchSeller method with the entered seller's name
+                                            foundUser = customer.searchSeller(toSearch);
 
-                                        System.out.println("Enter the new message: ");
-                                        String newMessage = input.nextLine();
-
-                                        message.editMessage(lineToEdit, newMessage);
-
-                                    } else if (newResponse == 4) {
-                                        System.out.println("Select a store to delete a message from the conversation history: ");
-                                        String storeToDeleteLine = input.nextLine();
-
-                                        String sellerToDeleteLine = customer.storeToSeller(storeToDeleteLine);
-
-                                        Message message = new Message(user, sellerToDeleteLine);
-                                        message.printMessageHistoryWithIndeces();
-
-                                        System.out.println("Select a line to delete: ");
-                                        int lineToDelete = input.nextInt();
-                                        input.nextLine();
-
-                                        message.deleteMessage(lineToDelete);
-
-                                    } else if (newResponse == 5) {
-                                        System.out.println("Select a store to become invisible to: ");
-                                        String storeInvisible = input.nextLine();
-
-                                        String sellerInvisible = customer.storeToSeller(storeInvisible);
-
-                                        user.writeCantSeeList(sellerInvisible);
-                                        System.out.println("You have become invisible to " + sellerInvisible + "!");
-
-                                    } else if (newResponse == 0) {
-                                        System.out.println("Messaging quit successfully.");
-                                        break outer;
-
-                                    } else {
-                                        System.out.println("Invalid input. Please try again.");
-                                    }
-                                }
-
-                                //search for a specific seller to message
-                            } else if (response == 2) {
-                                System.out.println("Please enter a username. Remember that all names are case-sensitive.");
-                                String sellerToSearch = input.nextLine();
-
-                                // Call the searchSeller method with the entered seller's name
-                                boolean foundSeller = customer.searchSeller(sellerToSearch);
-
-                                //if the person they want to message is invisible to them, make foundseller false
-                                //so that they can't message
-                                if (user.checkIfCantSee(sellerToSearch)) {
-                                    foundSeller = false;
-                                }
-
-                                while (true) {
-                                    if (foundSeller) {
-                                        System.out.println("Message Seller " + sellerToSearch + " [1], Block Seller [2], " +
-                                                "Edit Conversation [3], Delete a Message [4], Become Invisible [5], " +
-                                                "or Cancel [0]");
-                                        int newResponse = input.nextInt();
-                                        input.nextLine();
-
-                                        if (newResponse == 1) {
-                                            if (user.checkIfBlocked(sellerToSearch)) {
-                                                System.out.println("You have been blocked by this user and cannot message!");
-                                            } else {
-                                                Message message = new Message(user, sellerToSearch);
-                                                message.printMessageHistory();
-
-                                                System.out.println("Enter Message:");
-                                                message.sendMessage(input.nextLine());
+                                            // User was found
+                                            if (foundUser) {
+                                                break roleChoices;
                                             }
 
-                                        } else if (newResponse == 2) {
-                                            System.out.println("Select a user to block: ");
-                                            String userToBlock = input.nextLine();
+                                            // If user isn't found, ask to try again or quit searching
+                                            System.out.println(USER_NOT_FOUND);
+                                            System.out.println(TRY_AGAIN);
+                                            String again = input.nextLine().toUpperCase();
 
-                                            user.writeBlockedByList(userToBlock);
-                                            System.out.println("You have blocked user " + userToBlock + "!");
+                                            // Ask user if they'd like to try again? If Y continue, else quit.
+                                            if (!again.equals("Y")) {
+                                                break;
+                                            }
+                                        } while (true);    // Ensures valid user or cancel
+                                        break;
 
-                                        } else if (newResponse == 3) {
-                                            Message message = new Message(user, sellerToSearch);
-                                            message.printMessageHistoryWithIndeces();
+                                    case 3:    // View Statistics
+                                        // TODO: IMPLEMENT CUSTOMER SIDE STATISTICS
 
-                                            System.out.println("Select a line to edit: ");
-                                            int lineToEdit = input.nextInt();
-                                            input.nextLine();
+                                        break;
 
-                                            System.out.println("Enter the new message: ");
-                                            String newMessage = input.nextLine();
+                                    case 0:    // Cancel
+                                        System.out.println("Thank you!");
+                                        break userActions;
 
-                                            message.editMessage(lineToEdit, newMessage);
-
-                                        } else if (newResponse == 4) {
-                                            Message message = new Message(user, sellerToSearch);
-                                            message.printMessageHistoryWithIndeces();
-
-                                            System.out.println("Select a line to delete: ");
-                                            int lineToDelete = input.nextInt();
-                                            input.nextLine();
-
-                                            message.deleteMessage(lineToDelete);
-
-                                        } else if (newResponse == 5) {
-                                            user.writeCantSeeList(sellerToSearch);
-                                            System.out.println("You have become invisible to " + sellerToSearch + "!");
-
-                                        } else if (newResponse == 0) {
-                                            System.out.println("Messaging quit successfully.");
-                                            break outer;
-
-                                        } else {
-                                            System.out.println("Invalid Input. Please try again.");
-                                        }
-
-                                        //seller not found
-                                    } else {
-                                        throw new CantMessageException(user.getRole());
-                                    }
                                 }
 
-                            } else if (response == 0) {
-                                System.out.println("System quit successfully.");
-                                break;
 
-                            } else {
-                                System.out.println("Invalid input. Please try again.\n");
-                            }
-                        }
-
-                        /**
-                         * below is for seller actions
-                         */
-                    } else if (user.getRole().equalsIgnoreCase("seller")) {
-                        //note: looping implemented!
-                        //seller actions
-                        outer:
-                        while (true) {
-                            System.out.println("View Customers List [1], Search for a Customer [2], or Cancel [0]?");
-                            int response = input.nextInt();
-                            input.nextLine();
-
-                            //view customers list and choose one of the customers to message
-                            if (response == 1) {
-                                System.out.println("List of all customers:");
-                                for (String customer : user.getCustomerListInvis()) {
-                                    System.out.println(customer);
-                                }
-
-                                //looping that will continue to loop unless user selects to cancel messaging [0]
-                                while (true) {
-                                    //blocking would be implemented here as 'or Block User [2]'
-                                    System.out.println("\nMessage User [1], Block User [2], Edit Conversation [3], " +
-                                            "Delete a Message [4], Become Invisible [5], or Cancel [0]");
-                                    int newResponse = input.nextInt();
-                                    input.nextLine();
-
-                                    if (newResponse == 1) {
-                                        System.out.println("Select a user to message: ");
-                                        String userToMessage = input.nextLine();
-
-                                        if (user.checkIfBlocked(userToMessage)) {
-                                            System.out.println("You have been blocked by this user and cannot message!");
-                                        } else {
-                                            Message message = new Message(user, userToMessage);
-                                            message.printMessageHistory();
-
-                                            System.out.println("Enter Message:");
-                                            message.sendMessage(input.nextLine());
-                                        }
-
-                                        //add to blocking list
-                                    } else if (newResponse == 2) {
-                                        System.out.println("Select a user to block: ");
-                                        String userToBlock = input.nextLine();
-
-                                        user.writeBlockedByList(userToBlock);
-                                        System.out.println("You have blocked user " + userToBlock + "!");
-
-                                    } else if (newResponse == 3) {
-                                        System.out.println("Select a user to edit conversation history: ");
-                                        String userToEdit = input.nextLine();
-
-                                        Message message = new Message(user, userToEdit);
-                                        message.printMessageHistoryWithIndeces();
-
-                                        System.out.println("Select a line to edit: ");
-                                        int lineToEdit = input.nextInt();
-                                        input.nextLine();
-
-                                        System.out.println("Enter the new message: ");
-                                        String newMessage = input.nextLine();
-
-                                        message.editMessage(lineToEdit, newMessage);
-
-                                    } else if (newResponse == 4) {
-                                        System.out.println("Select a user to delete a message from the conversation history: ");
-                                        String userToDeleteLine = input.nextLine();
-
-                                        Message message = new Message(user, userToDeleteLine);
-                                        message.printMessageHistoryWithIndeces();
-
-                                        System.out.println("Select a line to delete: ");
-                                        int lineToDelete = input.nextInt();
-                                        input.nextLine();
-
-                                        message.deleteMessage(lineToDelete);
-
-                                    } else if (newResponse == 5) {
-                                        System.out.println("Select a user to become invisible to: ");
-                                        String userInvisible = input.nextLine();
-
-                                        user.writeCantSeeList(userInvisible);
-                                        System.out.println("You have become invisible to " + userInvisible + "!");
-
-                                    } else if (newResponse == 0) {
-                                        System.out.println("Messaging quit successfully.");
-                                        break outer;
-
-                                    } else {
-                                        System.out.println("Invalid input. Please try again.");
-                                    }
-                                }
-
-                                //search for a specific customer to message
-                            } else if (response == 2) {
-                                System.out.println("Please enter a username. Remember that all names are case-sensitive. ");
-                                String inputUsername = input.nextLine();
-
-                                //check if inside the accounts list
+                                // SELLERS:
+                            } else if (user.getRole().equalsIgnoreCase("seller")) {
                                 Seller seller = new Seller(user);
-                                boolean search = seller.searchCustomer(inputUsername);
 
-                                //if the person they want to message is invisible to them, make search false
-                                //so that they can't message
-                                if (user.checkIfCantSee(inputUsername)) {
-                                    search = false;
-                                }
+                                // Print Initial Seller Choices
+                                do {
+                                    System.out.println(SELLER_CHOICES);
 
-                                //looping will implement until user types [0] to cancel
-                                while (true) {
-                                    //customer username is found, can message
-                                    if (search) {
-                                        //blocking would be implemented here as 'or block customer [2]'
-                                        System.out.println("Message Customer " + inputUsername + " [1], Block Customer [2], " +
-                                                "Edit Conversation [3], Delete a Message [4], Become Invisible [5], " +
-                                                "or Cancel [0]");
-                                        int newResponse = input.nextInt();
-                                        input.nextLine();
-
-                                        if (newResponse == 1) {
-                                            if (user.checkIfBlocked(inputUsername)) {
-                                                System.out.println("You have been blocked by this user and cannot message!");
-                                            } else {
-                                                Message message = new Message(user, inputUsername);
-                                                message.printMessageHistory();
-
-                                                System.out.println("Enter Message:");
-                                                message.sendMessage(input.nextLine());
-                                            }
-
-                                        } else if (newResponse == 2) {
-                                            user.writeBlockedByList(inputUsername);
-                                            System.out.println("You have blocked user " + inputUsername + "!");
-
-                                        } else if (newResponse == 3) {
-                                            Message message = new Message(user, inputUsername);
-                                            message.printMessageHistoryWithIndeces();
-
-                                            System.out.println("Select a line to edit: ");
-                                            int lineToEdit = input.nextInt();
-                                            input.nextLine();
-
-                                            System.out.println("Enter the new message: ");
-                                            String newMessage = input.nextLine();
-
-                                            message.editMessage(lineToEdit, newMessage);
-
-                                        } else if (newResponse == 4) {
-                                            Message message = new Message(user, inputUsername);
-                                            message.printMessageHistoryWithIndeces();
-
-                                            System.out.println("Select a line to delete: ");
-                                            int lineToDelete = input.nextInt();
-                                            input.nextLine();
-
-                                            message.deleteMessage(lineToDelete);
-
-                                        } else if (newResponse == 5) {
-                                            user.writeCantSeeList(inputUsername);
-                                            System.out.println("You have become invisible to " + inputUsername + "!");
-
-                                        } else if (newResponse == 0) {
-                                            System.out.println("Messaging quit successfully.");
-                                            break outer;
-
+                                    // Saves input and checks if it is a valid integer input
+                                    String repsonse = input.nextLine();
+                                    try {
+                                        choice = Integer.parseInt(repsonse);
+                                        if (choice > 4 || choice < 0) {
+                                            System.out.println(INVALID_NUMBER_OPTION);
                                         } else {
-                                            System.out.println("Invalid Input. Please try again.");
+                                            break;
+                                        }
+                                    } catch (Exception e) {
+                                        System.out.println(INVALID_NUMBER_OPTION);
+                                    }
+                                } while (true);    // Ensures valid choice
+
+                                // Seller choice
+                                switch (choice) {
+                                    case 1:    // View Customers and selection
+                                        for (String customer : user.getCustomerListInvis()) {
+                                            System.out.println(customer);
                                         }
 
-                                        //customer username not found, can't message
-                                    } else {
-                                        throw new CantMessageException(user.getRole());
-                                    }
-                                }
+                                        // USER VERIFICATION
+                                        do {
+                                            System.out.println("Please enter customer username you would like to " +
+                                                    "interact with: ");
+                                            toSearch = input.nextLine();
 
-                            } else if (response == 0) {
-                                System.out.println("System quit successfully.");
-                                break;
-                            } else {
-                                System.out.println("Invalid input. Please try again.\n");
+                                            // Check if customer list contains searched customer
+                                            foundUser = seller.getCustomerList().contains(toSearch);
+
+                                            // Offer loop or quit if user not found, or if user is invisible
+                                            if (!foundUser || seller.checkIfCantSee(toSearch)) {
+                                                System.out.println(USER_NOT_FOUND);
+
+                                                // Ask user if they'd like to try again? If Y continue, else quit.
+                                                System.out.println(TRY_AGAIN);
+                                                String again = input.nextLine().toUpperCase();
+                                                if (!again.equals("Y")) {
+                                                    break;
+                                                }
+                                            } else if (foundUser) {
+                                                break roleChoices;
+                                            }
+                                        } while (true);     // User existence verifier
+                                        break;
+
+                                    case 2:    // Search for Customer
+                                        do {
+                                            System.out.println(SEARCH_USERNAME);
+                                            toSearch = input.nextLine();
+
+                                            // Call the searchCustomer method with the entered customer's name
+                                            foundUser = seller.searchCustomer(toSearch);
+
+                                            // User was found
+                                            if (foundUser) {
+                                                break roleChoices;
+                                            }
+
+                                            // If user isn't found, ask to try again or quit searching
+                                            System.out.println(USER_NOT_FOUND);
+                                            System.out.println(TRY_AGAIN);
+                                            String again = input.nextLine().toUpperCase();
+
+                                            // Ask user if they'd like to try again? If Y continue, else quit.
+                                            if (!again.equals("Y")) {
+                                                break;
+                                            }
+                                        } while (true);    // Ensures valid user or cancel
+                                        break;
+
+                                    case 3:    // View Statistics
+                                        // TODO: IMPLEMENT STATISTICS HERE
+                                        break;
+
+                                    case 4:    // Create Store
+                                        do {
+                                            System.out.println("Enter new store name: ");
+                                            String storeName = input.nextLine();
+
+                                            boolean createdStore = seller.createStore(storeName);
+
+                                            if (createdStore) {
+                                                System.out.println("Store, " + storeName + ", created!");
+                                                break;
+                                            } else {
+                                                System.out.println("Store name already taken, try a new name!");
+
+                                                // Ask user if they'd like to try again? If Y continue, else quit.
+                                                System.out.println(TRY_AGAIN);
+                                                String again = input.nextLine().toUpperCase();
+                                                if (!again.equals("Y")) {
+                                                    break;
+                                                }
+                                            }
+                                        } while (true);
+                                        break;
+                                    case 0:    // Cancel
+                                        System.out.println("Thank you!");
+                                        break userActions;
+                                }
                             }
-                        }
-                    }
+                        } while (true);    // Seller-Customer Option Loop
+
+                        // MESSAGING, BLOCKING, AND INVISIBILITY
+                        messagingChoices:
+                        while (true) {    // Loops through and asks about messaging, blocking, and invisibilty options
+                            // Messaging, Blocking, and Invisibility Options
+                            do {
+                                System.out.println(MESSAGING_AND_BLOCKING_CHOICES);
+
+                                // Saves input and checks if it is a valid integer input
+                                String repsonse = input.nextLine();
+                                try {
+                                    choice = Integer.parseInt(repsonse);
+                                    if (choice > 5 || choice < 0) {
+                                        System.out.println(INVALID_NUMBER_OPTION);
+                                    } else {
+                                        break;
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println(INVALID_NUMBER_OPTION);
+                                }
+                            } while (true);
+
+                            // Messaging, Blocking, and Invisibility Choices
+                            switch (choice) {    // TODO: CHECK ALL OF THIS NONSENSE
+                                case 1:    // Message
+                                    if (user.checkIfBlocked(toSearch)) {
+                                        System.out.println("You have been blocked by this user and cannot message!");
+                                    } else {
+                                        Message message = new Message(user, toSearch);
+                                        message.printMessageHistory();
+
+                                        System.out.println("Enter Message:");
+                                        message.sendMessage(input.nextLine());
+                                    }
+                                    break;
+
+                                case 2:    // Block
+                                    System.out.println("Select a user to block: ");
+                                    String userToBlock = input.nextLine();
+
+                                    user.writeBlockedByList(userToBlock);
+                                    System.out.println("You have blocked user " + userToBlock + "!");
+                                    break;
+
+                                case 3:    // Edit
+                                    Message message = new Message(user, toSearch);
+                                    message.printMessageHistoryWithIndeces();
+
+                                    System.out.println("Select a line to edit: ");
+                                    int lineToEdit = input.nextInt();
+                                    input.nextLine();
+
+                                    System.out.println("Enter the new message: ");
+                                    String newMessage = input.nextLine();
+
+                                    message.editMessage(lineToEdit, newMessage);
+                                    break;
+
+                                case 4:    // Delete
+                                    message = new Message(user, toSearch);
+                                    message.printMessageHistoryWithIndeces();
+
+                                    System.out.println("Select a line to delete: ");
+                                    int lineToDelete = input.nextInt();
+                                    input.nextLine();
+
+                                    message.deleteMessage(lineToDelete);
+                                    break;
+
+                                case 5:    // Become Invisible
+                                    user.writeCantSeeList(toSearch);
+                                    System.out.println("You have become invisible to " + toSearch + "!");
+                                    break;
+
+                                case 0:    // Cancel
+                                    System.out.println("Messaging quit successfully.");
+                                    break messagingChoices;
+
+                            }
+
+                        } // Messaging Loop
+                    } while (true);
                 }
+
+                // Close program entirely?
                 System.out.println("Would you like to close the program? [Y] or [N]: ");
                 String again = input.nextLine().toUpperCase();
 
@@ -404,7 +342,7 @@ public class Main {
                     break;
                 }
 
-            } while (true);
+            } while (true);    // Account Loop
         } catch (IOException e) {
             e.printStackTrace();
         } catch (CantMessageException e) {
