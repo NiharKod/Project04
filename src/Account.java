@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Account {
@@ -330,6 +331,46 @@ public class Account {
         }
         br.close();
         return sellers;
+    }
+
+    public ArrayList<String> getSellerListInvis() throws IOException {
+        ArrayList<String> sellerList = this.getSellerList();
+
+        File f = new File(this.username + "CantSeeList.txt");
+        FileReader fr = new FileReader(f);
+        BufferedReader bfr = new BufferedReader(fr);
+        ArrayList<String> cantSeeList = new ArrayList<>();
+
+        String line = bfr.readLine();
+        while (line != null) {
+            cantSeeList.add(line);
+            line = bfr.readLine();
+        }
+
+        //get the seller list, accounting for invisibility
+        if (cantSeeList != null) {
+            for (int i = 0; i < cantSeeList.size(); i++) {
+                sellerList.remove(cantSeeList.get(i));
+            }
+        }
+
+        BufferedReader storeManagerBFR = new BufferedReader(new FileReader("storemanager.txt"));
+        ArrayList<String> storeList = new ArrayList<>();
+
+        String lineStoreManager = storeManagerBFR.readLine();
+        while (lineStoreManager != null) {
+            String[] lineSep = lineStoreManager.split(",", 2);
+
+            for (int i = 0; i < sellerList.size(); i++) {
+                if (sellerList.get(i).equals(lineSep[0])) {
+                    storeList.add(lineSep[1]);
+                }
+            }
+
+            lineStoreManager = storeManagerBFR.readLine();
+        }
+
+        return storeList;
     }
 
     public String toString() {
