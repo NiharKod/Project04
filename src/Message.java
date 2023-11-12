@@ -2,6 +2,20 @@ import java.awt.print.PrinterAbortException;
 import java.io.*;
 import java.util.ArrayList;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+/**
+ * Message class
+ *
+ * <p>Purdue University -- CS18000 -- Fall 2023 -- Project 04 -- </p>
+ *
+ * @author Nihar Kodkani, Nangba Konyak, Isabelle Lee, Sandesh Reddy
+ * @version November 12th, 2023
+ */
+
 public class Message {
     private Account from;
     private Account to = new Account();
@@ -57,7 +71,6 @@ public class Message {
     }
 
     public void printMessageHistoryWithIndeces() throws IOException {
-
         BufferedReader brFrom = new BufferedReader(new FileReader(from.getUsername() + "-"
                 + this.to.getUsername() + ".txt"));
         String line;
@@ -120,18 +133,13 @@ public class Message {
                 break;
             }
         }
-
-
         //delete original file
         f = new File(this.to.getUsername() + "-"
                 + from.getUsername() + ".txt");
-
         f.delete();
         //rewrite contents with deleted line.
         pwTo = new PrintWriter(new FileOutputStream(this.to.getUsername() + "-"
                 + from.getUsername() + ".txt", true));
-
-
         for (String m : messages) {
             pwTo.println(m);
             pwTo.flush();
@@ -143,7 +151,6 @@ public class Message {
         pwFrom.close();
         brFrom.close();
         brTo.close();
-
     }
 
     public void deleteMessage(int i) throws IOException {
@@ -157,16 +164,13 @@ public class Message {
         }
         //remove message
         messages.remove(i - 1);
-
         //delete original file
         File f = new File(from.getUsername() + "-"
                 + this.to.getUsername() + ".txt");
-
         f.delete();
         //rewrite contents with deleted line.
         pwFrom = new PrintWriter(new FileOutputStream(from.getUsername() + "-"
                 + this.to.getUsername() + ".txt", true));
-
         for (String m : messages) {
             pwFrom.println(m);
             pwFrom.flush();
@@ -175,6 +179,38 @@ public class Message {
         printMessageHistory();
         pwFrom.close();
         brFrom.close();
+    }
 
+    public void displayMostCommonWords() throws IOException {
+        List<String> messages = new ArrayList<>();
+        BufferedReader brFrom = new BufferedReader(new FileReader(from.getUsername() + "-"
+                + this.to.getUsername() + ".txt"));
+        String line;
+
+        while ((line = brFrom.readLine()) != null) {
+            messages.add(line);
+        }
+        Map<String, Integer> wordCountMap = new HashMap<>();
+
+        for (String message : messages) {
+            String removeNames = extractCustomerFromMessage(message);
+            String[] words = removeNames.split("\\s+");
+            for (String word : words) {
+                wordCountMap.put(word, wordCountMap.getOrDefault(word, 0) + 1);
+            }
+        }
+
+        System.out.println("\nMost common words in overall messages:");
+        wordCountMap.entrySet().stream().max(Map.Entry.comparingByValue()).stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .limit(5)
+                .forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue() + " occurrences"));
+    }
+    private static String extractCustomerFromMessage(String message) {
+        // Assuming the format is (Role)Username: Message
+        int count = message.trim().indexOf(':');
+        String concatMessages = message.substring(count+1).trim();
+        //   return concatMessages.split("\\)")[1].split(":")[0];
+        return concatMessages.split("\\)")[0];
     }
 }

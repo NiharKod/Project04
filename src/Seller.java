@@ -1,6 +1,14 @@
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * Seller class
+ *
+ * <p>Purdue University -- CS18000 -- Fall 2023 -- Project 04 -- </p>
+ *
+ * @author Nihar Kodkani, Nangba Konyak, Isabelle Lee, Sandesh Reddy
+ * @version November 12th, 2023
+ */
 public class Seller extends Account {
 
     ArrayList<String> stores = new ArrayList<>();
@@ -60,7 +68,7 @@ public class Seller extends Account {
 
             // If no user, add user and their store to storemanager.txt
             if (!foundStore) {
-                ArrayList<String > newSeller = new ArrayList<>();
+                ArrayList<String> newSeller = new ArrayList<>();
                 newSeller.add(getUsername());
                 newSeller.add(storeName);
                 storeManager.add(newSeller);

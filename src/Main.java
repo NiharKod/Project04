@@ -2,9 +2,12 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * notes:
- * figure out how to keep code running even after exception (while loop around the whole try-catch?)
- * blocking has not been implemented yet, need to do that
+ * Main class
+ *
+ * <p>Purdue University -- CS18000 -- Fall 2023 -- Project 04 -- </p>
+ *
+ * @author Nihar Kodkani, Nangba Konyak, Isabelle Lee, Sandesh Reddy
+ * @version November 12th, 2023
  */
 
 public class Main {

@@ -3,6 +3,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * Account class
+ *
+ * <p>Purdue University -- CS18000 -- Fall 2023 -- Project 04 -- </p>
+ *
+ * @author Nihar Kodkani, Nangba Konyak, Isabelle Lee, Sandesh Reddy
+ * @version November 12th, 2023
+ */
 public class Account {
     private String username;
     private String email;
