@@ -1,2 +1,1 @@
-username,Store1...Store(i)
-JaneDoe,Jane's Goods
+JaneDoe,Jane's Goods,Jane-Mart

@@ -1,2 +1,2 @@
-Username,Email,Password,Role
 JaneDoe,jane.doe@gmail.com,Password@123,Seller
+BillyBob,billbob@yahoo.com,Password@456,Customer
