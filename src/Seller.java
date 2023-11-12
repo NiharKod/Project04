@@ -60,7 +60,7 @@ public class Seller extends Account {
 
             // If no user, add user and their store to storemanager.txt
             if (!foundStore) {
-                ArrayList<String > newSeller = new ArrayList<>();
+                ArrayList<String> newSeller = new ArrayList<>();
                 newSeller.add(getUsername());
                 newSeller.add(storeName);
                 storeManager.add(newSeller);

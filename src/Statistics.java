@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.*;
 
 public class Statistics {
-
     // Method for Sellers to view dashboard statistics
     public static void viewSellerDashboard(String sellerUsername) throws IOException {
         // Load message data

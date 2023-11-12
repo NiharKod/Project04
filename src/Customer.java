@@ -28,7 +28,6 @@ public class Customer extends Account {
         this.assignedSeller = null; // Initialize assignedSeller to null
         this.storeNames = new ArrayList<>(); // Initialize the storeNames list
     }
-
     // Method to view all stores from "storemanager.txt" file
     public void viewStores() {
         try (BufferedReader br = new BufferedReader(new FileReader("storemanager.txt"))) {

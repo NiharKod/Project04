@@ -57,7 +57,6 @@ public class Message {
     }
 
     public void printMessageHistoryWithIndeces() throws IOException {
-
         BufferedReader brFrom = new BufferedReader(new FileReader(from.getUsername() + "-"
                 + this.to.getUsername() + ".txt"));
         String line;
@@ -120,18 +119,13 @@ public class Message {
                 break;
             }
         }
-
-
         //delete original file
         f = new File(this.to.getUsername() + "-"
                 + from.getUsername() + ".txt");
-
         f.delete();
         //rewrite contents with deleted line.
         pwTo = new PrintWriter(new FileOutputStream(this.to.getUsername() + "-"
                 + from.getUsername() + ".txt", true));
-
-
         for (String m : messages) {
             pwTo.println(m);
             pwTo.flush();
@@ -143,7 +137,6 @@ public class Message {
         pwFrom.close();
         brFrom.close();
         brTo.close();
-
     }
 
     public void deleteMessage(int i) throws IOException {
@@ -157,16 +150,13 @@ public class Message {
         }
         //remove message
         messages.remove(i - 1);
-
         //delete original file
         File f = new File(from.getUsername() + "-"
                 + this.to.getUsername() + ".txt");
-
         f.delete();
         //rewrite contents with deleted line.
         pwFrom = new PrintWriter(new FileOutputStream(from.getUsername() + "-"
                 + this.to.getUsername() + ".txt", true));
-
         for (String m : messages) {
             pwFrom.println(m);
             pwFrom.flush();
@@ -175,6 +165,5 @@ public class Message {
         printMessageHistory();
         pwFrom.close();
         brFrom.close();
-
     }
 }
