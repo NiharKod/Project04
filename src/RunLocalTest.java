@@ -33,7 +33,7 @@ public class RunLocalTest {
         System.setIn(new ByteArrayInputStream(input.getBytes()));
 
         // Call the main method of your application (MainCopy)
-        MainCopy.main(new String[]{});
+        Main.main(new String[]{});
 
         // Define the expected output based on your application's behavior
         String expectedOutput = "Log-In [1] or Create New Account [2]?\n" +
