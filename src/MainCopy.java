@@ -1,7 +1,6 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -107,10 +106,11 @@ public class MainCopy {
                         // Call the searchSeller method with the entered seller's name
                         boolean foundSeller = customer.searchSeller(sellerToSearch);
 
+
                         while (true) {
                             if (foundSeller) {
                                 System.out.println("Message Seller " + sellerToSearch + " [1], Block Seller [2], " +
-                                        "Edit Conversation [3], Delete a Message [4], or Cancel [0]");
+                                        "Edit Conversation [3], Delete a Message [4], or Cancel [0],Get statistics [5] ");
                                 int newResponse = input.nextInt();
                                 input.nextLine();
 
@@ -144,6 +144,11 @@ public class MainCopy {
 
                                     message.deleteMessage(lineToDelete);
 
+                                } else if (newResponse == 5) {
+
+                                    getStats(user, sellerToSearch);
+
+
                                 } else if (newResponse == 0) {
                                     System.out.println("Messaging quit successfully.");
                                     break outer;
@@ -162,7 +167,7 @@ public class MainCopy {
                         System.out.println("System quit successfully.");
                         break;
 
-                    } else {
+                    }  else {
                         System.out.println("Invalid input. Please try again.\n");
                     }
                 }
@@ -190,7 +195,7 @@ public class MainCopy {
                         while (true) {
                             //blocking would be implemented here as 'or Block User [2]'
                             System.out.println("\nMessage User [1], Block User [2], Edit Conversation [3], " +
-                                    "Delete a Message [4], or Cancel [0]");
+                                    "Delete a Message [4], or Cancel [0] ");
                             int newResponse = input.nextInt();
                             input.nextLine();
 
@@ -246,6 +251,11 @@ public class MainCopy {
                                 System.out.println("Messaging quit successfully.");
                                 break outer;
 
+                            }else if (newResponse == 5) {
+
+                                System.out.println("Select a user to get conversation history: ");
+                                String userTogetchatHistory = input.nextLine();
+                                getStats(user,userTogetchatHistory);
                             } else {
                                 System.out.println("Invalid input. Please try again.");
                             }
@@ -266,7 +276,7 @@ public class MainCopy {
                             if (search) {
                                 //blocking would be implemented here as 'or block customer [2]'
                                 System.out.println("Message Customer " + inputUsername + " [1], Block Customer [2], " +
-                                        "Edit Conversation [3], Delete a Message [4], or Cancel [0]");
+                                        "Edit Conversation [3], Delete a Message [4], or Cancel [0], get statistics [5] ");
                                 int newResponse = input.nextInt();
                                 input.nextLine();
 
@@ -304,6 +314,8 @@ public class MainCopy {
                                     System.out.println("Messaging quit successfully.");
                                     break outer;
 
+                                } else if (newResponse == 5) {
+                                    getStats(user, inputUsername);
                                 } else {
                                     System.out.println("Invalid Input. Please try again.");
                                 }
@@ -331,4 +343,21 @@ public class MainCopy {
             e.printStackTrace();
         }
     }
+
+    private static void getStats(Account user, String inputUsername) throws IOException, CantMessageException {
+        System.out.println("Select Get Chat History [1], Get most common word occurrences [2] ");
+        Scanner input = new Scanner(System.in);
+        int response = input.nextInt();
+        if(response == 1){
+
+            Message message = new Message(user, inputUsername);
+            message.printMessageHistory();
+        } else if (response == 2) {
+            Message message = new Message(user, inputUsername);
+            message.displayMostCommonWords();
+        }
+
+    }
+
+
 }
