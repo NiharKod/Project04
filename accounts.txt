@@ -1,1 +1,3 @@
-
+Username,email,password,role
+niharkod,nkodkani@purdue.edu,fancybook3!2,Seller
+jdoe,jdoe@gmail.com,Password123!,Customer

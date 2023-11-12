@@ -220,7 +220,8 @@ public class Main {
                                         break;
 
                                     case 3:    // View Statistics
-                                        // TODO: IMPLEMENT STATISTICS HERE
+                                        System.out.println("Printing out statistics");
+                                        getStats(user, user.getUsername());
                                         break;
 
                                     case 4:    // Create Store
@@ -359,7 +360,7 @@ public class Main {
         System.out.println("Select Get Chat History [1], Get most common word occurrences [2] ");
         Scanner input = new Scanner(System.in);
         int response = input.nextInt();
-        if(response == 1){
+        if (response == 1) {
 
             Message message = new Message(user, inputUsername);
             message.printMessageHistory();
