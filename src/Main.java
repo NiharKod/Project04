@@ -1,4 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -383,6 +386,7 @@ public class Main {
                             } while (true);
 
                             // Messaging, Blocking, and Invisibility Choices
+                            messageSwitch:
                             switch (choice) {    // TODO: CHECK ALL OF THIS NONSENSE
                                 case 1:    // Message
                                     if (user.checkIfBlocked(toSearch)) {
@@ -404,10 +408,51 @@ public class Main {
                                 case 3:    // Edit
                                     Message message = new Message(user, toSearch);
                                     message.printMessageHistoryWithIndeces();
+                                    int lineToEdit;
 
-                                    System.out.println("Select a line to edit: ");
-                                    int lineToEdit = input.nextInt();
-                                    input.nextLine();
+                                    BufferedReader brFromEd = new BufferedReader(new FileReader(user.getUsername() + "-"
+                                            + toSearch + ".txt"));
+                                    //read every line into an array list. delete line.
+                                    ArrayList<String> messagesEd = new ArrayList<>();
+                                    String lineEd;
+                                    while ((lineEd = brFromEd.readLine()) != null) {
+                                        messagesEd.add(lineEd);
+                                    }
+
+                                    int linesInHistoryEd = messagesEd.size();
+                                    brFromEd.close();
+
+                                    do{
+                                        System.out.println("Select a line to edit: ");
+
+                                        // Saves input and checks if it is a valid integer input
+                                        String repsonse = input.nextLine();
+                                        try {
+                                            lineToEdit = Integer.parseInt(repsonse);
+                                            if (lineToEdit > linesInHistoryEd || lineToEdit <= 0) {
+                                                System.out.println(INVALID_NUMBER_OPTION);
+
+                                                do {
+                                                    System.out.println(TRY_AGAIN);
+                                                    String again = input.nextLine().toUpperCase();
+
+                                                    if (again.equals("Y")) {
+                                                        System.out.println();
+                                                        break;
+                                                    } else if (again.equals("N")) {
+                                                        System.out.println();
+                                                        break messageSwitch;
+                                                    } else if (!again.equals("N") || !again.equals("Y")) {
+                                                        System.out.println("Invalid Input.");
+                                                    }
+                                                } while (true);    // Try Again?
+                                            } else {
+                                                break;
+                                            }
+                                        } catch (Exception e) {
+                                            System.out.println(INVALID_NUMBER_OPTION);
+                                        }
+                                    } while (true);    // Ensures valid choice
 
                                     System.out.println("Enter the new message: ");
                                     String newMessage = input.nextLine();
@@ -418,10 +463,51 @@ public class Main {
                                 case 4:    // Delete
                                     message = new Message(user, toSearch);
                                     message.printMessageHistoryWithIndeces();
+                                    int lineToDelete;
 
-                                    System.out.println("Select a line to delete: ");
-                                    int lineToDelete = input.nextInt();
-                                    input.nextLine();
+                                    BufferedReader brFromDel = new BufferedReader(new FileReader(user.getUsername() + "-"
+                                            + toSearch + ".txt"));
+                                    //read every line into an array list. delete line.
+                                    ArrayList<String> messagesDel = new ArrayList<>();
+                                    String lineDel;
+                                    while ((lineDel = brFromDel.readLine()) != null) {
+                                        messagesDel.add(lineDel);
+                                    }
+
+                                    int linesInHistoryDel = messagesDel.size();
+                                    brFromDel.close();
+
+                                    do {
+                                        System.out.println("Select a line to delete: ");
+
+                                        // Saves input and checks if it is a valid integer input
+                                        String repsonse = input.nextLine();
+                                        try {
+                                            lineToDelete = Integer.parseInt(repsonse);
+                                            if (lineToDelete > linesInHistoryDel || lineToDelete <= 0) {
+                                                System.out.println(INVALID_NUMBER_OPTION);
+
+                                                do {
+                                                    System.out.println(TRY_AGAIN);
+                                                    String again = input.nextLine().toUpperCase();
+
+                                                    if (again.equals("Y")) {
+                                                        System.out.println();
+                                                        break;
+                                                    } else if (again.equals("N")) {
+                                                        System.out.println();
+                                                        break messageSwitch;
+                                                    } else if (!again.equals("N") || !again.equals("Y")) {
+                                                        System.out.println("Invalid Input.");
+                                                    }
+                                                } while (true);    // Try Again?
+                                            } else {
+                                                break;
+                                            }
+                                        } catch (Exception e) {
+                                            System.out.println(INVALID_NUMBER_OPTION);
+                                        }
+                                    } while (true);    // Ensures valid input
 
                                     message.deleteMessage(lineToDelete);
                                     break;

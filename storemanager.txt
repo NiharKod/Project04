@@ -1,3 +1,4 @@
 niharkod,Microcenter
 sandesh,ssbooks
 seller1,TestStore
+Kelly,Kelly's Market
