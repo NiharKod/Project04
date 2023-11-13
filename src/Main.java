@@ -363,167 +363,170 @@ public class Main {
                             }
                         } while (true);    // Seller-Customer Option Loop
 
-                        // MESSAGING, BLOCKING, AND INVISIBILITY
-                        messagingChoices:
-                        while (true) {    // Loops through and asks about messaging, blocking, and invisibilty options
-                            // Messaging, Blocking, and Invisibility Options
-                            do {
-                                System.out.println("Interacting with: " + toSearch);
-                                System.out.println(MESSAGING_AND_BLOCKING_CHOICES);
+                        // If the user has been blocked, cant interact with user
+                        if (!user.checkIfBlocked(toSearch)) {
 
-                                // Saves input and checks if it is a valid integer input
-                                String repsonse = input.nextLine();
-                                try {
-                                    choice = Integer.parseInt(repsonse);
-                                    if (choice > 5 || choice < 0) {
+                            // MESSAGING, BLOCKING, AND INVISIBILITY
+                            messagingChoices:
+                            while (true) {    // Loops through and asks about messaging, blocking, and invisibilty options
+                                // Messaging, Blocking, and Invisibility Options
+                                do {
+                                    System.out.println("Interacting with: " + toSearch);
+                                    System.out.println(MESSAGING_AND_BLOCKING_CHOICES);
+
+                                    // Saves input and checks if it is a valid integer input
+                                    String repsonse = input.nextLine();
+                                    try {
+                                        choice = Integer.parseInt(repsonse);
+                                        if (choice > 5 || choice < 0) {
+                                            System.out.println(INVALID_NUMBER_OPTION);
+                                        } else {
+                                            break;
+                                        }
+                                    } catch (Exception e) {
                                         System.out.println(INVALID_NUMBER_OPTION);
-                                    } else {
-                                        break;
                                     }
-                                } catch (Exception e) {
-                                    System.out.println(INVALID_NUMBER_OPTION);
-                                }
-                            } while (true);
+                                } while (true);
 
-                            // Messaging, Blocking, and Invisibility Choices
-                            messageSwitch:
-                            switch (choice) {    // TODO: CHECK ALL OF THIS NONSENSE
-                                case 1:    // Message
-                                    if (user.checkIfBlocked(toSearch)) {
-                                        System.out.println("You have been blocked by this user and cannot message!");
-                                    } else {
+                                // Messaging, Blocking, and Invisibility Choices
+                                messageSwitch:
+                                switch (choice) {
+                                    case 1:    // Message
+
                                         Message message = new Message(user, toSearch);
                                         message.printMessageHistory();
 
                                         System.out.println("Enter Message:");
                                         message.sendMessage(input.nextLine());
-                                    }
-                                    break;
+                                        break;
 
-                                case 2:    // Block
-                                    user.writeBlockedByList(toSearch);
-                                    System.out.println("You have blocked user " + toSearch + "!");
-                                    break;
+                                    case 2:    // Block
+                                        user.writeBlockedByList(toSearch);
+                                        System.out.println("You have blocked user " + toSearch + "!");
+                                        break;
 
-                                case 3:    // Edit
-                                    Message message = new Message(user, toSearch);
-                                    message.printMessageHistoryWithIndeces();
-                                    int lineToEdit;
+                                    case 3:    // Edit
+                                        message = new Message(user, toSearch);
+                                        message.printMessageHistoryWithIndeces();
+                                        int lineToEdit;
 
-                                    BufferedReader brFromEd = new BufferedReader(new FileReader(user.getUsername() + "-"
-                                            + toSearch + ".txt"));
-                                    //read every line into an array list. delete line.
-                                    ArrayList<String> messagesEd = new ArrayList<>();
-                                    String lineEd;
-                                    while ((lineEd = brFromEd.readLine()) != null) {
-                                        messagesEd.add(lineEd);
-                                    }
-
-                                    int linesInHistoryEd = messagesEd.size();
-                                    brFromEd.close();
-
-                                    do{
-                                        System.out.println("Select a line to edit: ");
-
-                                        // Saves input and checks if it is a valid integer input
-                                        String repsonse = input.nextLine();
-                                        try {
-                                            lineToEdit = Integer.parseInt(repsonse);
-                                            if (lineToEdit > linesInHistoryEd || lineToEdit <= 0) {
-                                                System.out.println(INVALID_NUMBER_OPTION);
-
-                                                do {
-                                                    System.out.println(TRY_AGAIN);
-                                                    String again = input.nextLine().toUpperCase();
-
-                                                    if (again.equals("Y")) {
-                                                        System.out.println();
-                                                        break;
-                                                    } else if (again.equals("N")) {
-                                                        System.out.println();
-                                                        break messageSwitch;
-                                                    } else if (!again.equals("N") || !again.equals("Y")) {
-                                                        System.out.println("Invalid Input.");
-                                                    }
-                                                } while (true);    // Try Again?
-                                            } else {
-                                                break;
-                                            }
-                                        } catch (Exception e) {
-                                            System.out.println(INVALID_NUMBER_OPTION);
+                                        BufferedReader brFromEd = new BufferedReader(new FileReader(user.getUsername() + "-"
+                                                + toSearch + ".txt"));
+                                        //read every line into an array list. delete line.
+                                        ArrayList<String> messagesEd = new ArrayList<>();
+                                        String lineEd;
+                                        while ((lineEd = brFromEd.readLine()) != null) {
+                                            messagesEd.add(lineEd);
                                         }
-                                    } while (true);    // Ensures valid choice
 
-                                    System.out.println("Enter the new message: ");
-                                    String newMessage = input.nextLine();
+                                        int linesInHistoryEd = messagesEd.size();
+                                        brFromEd.close();
 
-                                    message.editMessage(lineToEdit, newMessage);
-                                    break;
+                                        do {
+                                            System.out.println("Select a line to edit: ");
 
-                                case 4:    // Delete
-                                    message = new Message(user, toSearch);
-                                    message.printMessageHistoryWithIndeces();
-                                    int lineToDelete;
+                                            // Saves input and checks if it is a valid integer input
+                                            String repsonse = input.nextLine();
+                                            try {
+                                                lineToEdit = Integer.parseInt(repsonse);
+                                                if (lineToEdit > linesInHistoryEd || lineToEdit <= 0) {
+                                                    System.out.println(INVALID_NUMBER_OPTION);
 
-                                    BufferedReader brFromDel = new BufferedReader(new FileReader(user.getUsername() + "-"
-                                            + toSearch + ".txt"));
-                                    //read every line into an array list. delete line.
-                                    ArrayList<String> messagesDel = new ArrayList<>();
-                                    String lineDel;
-                                    while ((lineDel = brFromDel.readLine()) != null) {
-                                        messagesDel.add(lineDel);
-                                    }
+                                                    do {
+                                                        System.out.println(TRY_AGAIN);
+                                                        String again = input.nextLine().toUpperCase();
 
-                                    int linesInHistoryDel = messagesDel.size();
-                                    brFromDel.close();
-
-                                    do {
-                                        System.out.println("Select a line to delete: ");
-
-                                        // Saves input and checks if it is a valid integer input
-                                        String repsonse = input.nextLine();
-                                        try {
-                                            lineToDelete = Integer.parseInt(repsonse);
-                                            if (lineToDelete > linesInHistoryDel || lineToDelete <= 0) {
+                                                        if (again.equals("Y")) {
+                                                            System.out.println();
+                                                            break;
+                                                        } else if (again.equals("N")) {
+                                                            System.out.println();
+                                                            break messageSwitch;
+                                                        } else if (!again.equals("N") || !again.equals("Y")) {
+                                                            System.out.println("Invalid Input.");
+                                                        }
+                                                    } while (true);    // Try Again?
+                                                } else {
+                                                    break;
+                                                }
+                                            } catch (Exception e) {
                                                 System.out.println(INVALID_NUMBER_OPTION);
-
-                                                do {
-                                                    System.out.println(TRY_AGAIN);
-                                                    String again = input.nextLine().toUpperCase();
-
-                                                    if (again.equals("Y")) {
-                                                        System.out.println();
-                                                        break;
-                                                    } else if (again.equals("N")) {
-                                                        System.out.println();
-                                                        break messageSwitch;
-                                                    } else if (!again.equals("N") || !again.equals("Y")) {
-                                                        System.out.println("Invalid Input.");
-                                                    }
-                                                } while (true);    // Try Again?
-                                            } else {
-                                                break;
                                             }
-                                        } catch (Exception e) {
-                                            System.out.println(INVALID_NUMBER_OPTION);
+                                        } while (true);    // Ensures valid choice
+
+                                        System.out.println("Enter the new message: ");
+                                        String newMessage = input.nextLine();
+
+                                        message.editMessage(lineToEdit, newMessage);
+                                        break;
+
+                                    case 4:    // Delete
+                                        message = new Message(user, toSearch);
+                                        message.printMessageHistoryWithIndeces();
+                                        int lineToDelete;
+
+                                        BufferedReader brFromDel = new BufferedReader(new FileReader(user.getUsername() + "-"
+                                                + toSearch + ".txt"));
+                                        //read every line into an array list. delete line.
+                                        ArrayList<String> messagesDel = new ArrayList<>();
+                                        String lineDel;
+                                        while ((lineDel = brFromDel.readLine()) != null) {
+                                            messagesDel.add(lineDel);
                                         }
-                                    } while (true);    // Ensures valid input
 
-                                    message.deleteMessage(lineToDelete);
-                                    break;
+                                        int linesInHistoryDel = messagesDel.size();
+                                        brFromDel.close();
 
-                                case 5:    // Become Invisible
-                                    user.writeCantSeeList(toSearch);
-                                    System.out.println("You have become invisible to " + toSearch + "!");
-                                    break;
+                                        do {
+                                            System.out.println("Select a line to delete: ");
 
-                                case 0:    // Cancel
-                                    System.out.println("Messaging quit successfully.");
-                                    break messagingChoices;
+                                            // Saves input and checks if it is a valid integer input
+                                            String repsonse = input.nextLine();
+                                            try {
+                                                lineToDelete = Integer.parseInt(repsonse);
+                                                if (lineToDelete > linesInHistoryDel || lineToDelete <= 0) {
+                                                    System.out.println(INVALID_NUMBER_OPTION);
 
-                            }
+                                                    do {
+                                                        System.out.println(TRY_AGAIN);
+                                                        String again = input.nextLine().toUpperCase();
 
-                        } // Messaging Loop
+                                                        if (again.equals("Y")) {
+                                                            System.out.println();
+                                                            break;
+                                                        } else if (again.equals("N")) {
+                                                            System.out.println();
+                                                            break messageSwitch;
+                                                        } else if (!again.equals("N") || !again.equals("Y")) {
+                                                            System.out.println("Invalid Input.");
+                                                        }
+                                                    } while (true);    // Try Again?
+                                                } else {
+                                                    break;
+                                                }
+                                            } catch (Exception e) {
+                                                System.out.println(INVALID_NUMBER_OPTION);
+                                            }
+                                        } while (true);    // Ensures valid input
+
+                                        message.deleteMessage(lineToDelete);
+                                        break;
+
+                                    case 5:    // Become Invisible
+                                        user.writeCantSeeList(toSearch);
+                                        System.out.println("You have become invisible to " + toSearch + "!");
+                                        break;
+
+                                    case 0:    // Cancel
+                                        System.out.println("Messaging quit successfully.");
+                                        break messagingChoices;
+
+                                }
+
+                            } // Messaging Loop
+                        } else {
+                            System.out.println("You have been blocked by this user and cannot interact!");
+                        }
                     } while (true);
                 }
 
