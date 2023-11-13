@@ -78,7 +78,6 @@ public class Main {
                                         }
 
                                         // USER VERIFICATION
-                                        userVerificator:
                                         do {
                                             System.out.println("Please enter store name you would like to " +
                                                     "interact with: ");
@@ -147,12 +146,40 @@ public class Main {
                                         } while (true);    // Ensures valid user or cancel
 
                                     case 3:// View Statistics
-                                        System.out.println(SEARCH_USERNAME);
-                                        toSearch = input.nextLine();
+                                        // USER VERIFICATION
+                                        do {
+                                            System.out.println(SEARCH_USERNAME);
+                                            toSearch = input.nextLine();
+
+                                            // Check if seller list contains searched seller
+                                            foundUser = customer.getSellerList().contains(toSearch);
+
+                                            // Offer loop or quit if user not found, or if user is invisible
+                                            if (!foundUser || customer.checkIfCantSee(toSearch)) {
+                                                System.out.println(USER_NOT_FOUND);
+
+                                                // Ask user if they'd like to try again? If Y continue, else quit.
+                                                do {
+                                                    System.out.println(TRY_AGAIN);
+                                                    String again = input.nextLine().toUpperCase();
+
+                                                    if (again.equals("Y")) {
+                                                        System.out.println();
+                                                        break;
+                                                    } else if (again.equals("N")) {
+                                                        System.out.println();
+                                                        break customerChoice;
+                                                    } else if (!again.equals("N") || !again.equals("Y")) {
+                                                        System.out.println("Invalid Input.");
+                                                    }
+                                                } while (true);    // Try Again?
+                                            } else {
+                                                break;
+                                            }
+                                        } while (true);    // User existence verifier
 
                                         System.out.println("Printing out statistics");
                                         getStats(user, toSearch);
-
                                         break;
 
                                     case 0:    // Cancel
@@ -259,12 +286,40 @@ public class Main {
 
                                     case 3:// View Statistics
 
-                                        System.out.println(SEARCH_USERNAME);
-                                        toSearch = input.nextLine();
+                                        // USER VERIFICATION
+                                        do {
+                                            System.out.println(SEARCH_USERNAME);
+                                            toSearch = input.nextLine();
+
+                                            // Check if customer list contains searched customer
+                                            foundUser = seller.getCustomerList().contains(toSearch);
+
+                                            // Offer loop or quit if user not found, or if user is invisible
+                                            if (!foundUser || seller.checkIfCantSee(toSearch)) {
+                                                System.out.println(USER_NOT_FOUND);
+
+                                                // Ask user if they'd like to try again? If Y continue, else quit.
+                                                do {
+                                                    System.out.println(TRY_AGAIN);
+                                                    String again = input.nextLine().toUpperCase();
+
+                                                    if (again.equals("Y")) {
+                                                        System.out.println();
+                                                        break;
+                                                    } else if (again.equals("N")) {
+                                                        System.out.println();
+                                                        break sellerChoices;
+                                                    } else if (!again.equals("N") || !again.equals("Y")) {
+                                                        System.out.println("Invalid Input.");
+                                                    }
+                                                } while (true);    // Try Again?
+                                            } else {
+                                                break;
+                                            }
+                                        } while (true);     // User existence verifier
 
                                         System.out.println("Printing out statistics");
                                         getStats(user, toSearch);
-
                                         break;
 
                                     case 4:    // Create Store
