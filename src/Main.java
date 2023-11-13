@@ -126,7 +126,7 @@ public class Main {
                                             foundUser = customer.searchSeller(toSearch);
 
                                             // User was found
-                                            if (foundUser) {
+                                            if (foundUser && !user.checkIfCantSee(toSearch)) {
                                                 break roleChoices;
                                             }
 
@@ -265,7 +265,7 @@ public class Main {
                                             foundUser = seller.searchCustomer(toSearch);
 
                                             // User was found
-                                            if (foundUser) {
+                                            if (foundUser && !user.checkIfCantSee(toSearch)) {
                                                 break roleChoices;
                                             }
 
