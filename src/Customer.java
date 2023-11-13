@@ -38,31 +38,6 @@ public class Customer extends Account {
     }
 
     // Method to view all stores from "storemanager.txt" file
-    public void viewStores() {
-        try (BufferedReader br = new BufferedReader(new FileReader("storemanager.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] userData = line.split(",");
-                if (userData.length > 1) {
-                    for (int i = 1; i < userData.length; i++) {
-                        storeNames.add(userData[i].trim()); // Add store names to the list
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading store data from the file");
-        }
-
-        if (storeNames.isEmpty()) {
-            System.out.println("No stores found.");
-        } else {
-            // Display all stores
-            System.out.println("List of all stores:");
-            for (String storeName : storeNames) {
-                System.out.println(storeName);
-            }
-        }
-    }
 
     // Method to search for a seller and assign if found
     public boolean searchSeller(String sellerName) throws IOException {

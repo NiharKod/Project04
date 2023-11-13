@@ -90,12 +90,6 @@ public class Seller extends Account {
         }
     }
 
-    public void viewCustomers() throws IOException {
-        for (String customer : getCustomerList()) {
-            System.out.println(customer);
-        }
-    }
-
     public boolean searchCustomer(String customerName) throws IOException {
         return getCustomerList().contains(customerName);
     }
