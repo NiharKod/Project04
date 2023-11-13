@@ -177,7 +177,8 @@ public class Message {
         pwFrom.close();
         brFrom.close();
     }
-// Below are all the methods for statistics that have to be implemented
+// Below are all the methods for statistics
+// Statistics have been written in messages to make it easy for testcasing it
     public void displayMostCommonWords() throws IOException {
         List<String> messages = new ArrayList<>();
         BufferedReader brFrom = new BufferedReader(new FileReader(from.getUsername() + "-"
