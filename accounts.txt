@@ -2,3 +2,4 @@ Username,email,password,role
 niharkod,nkodkani@purdue.edu,fancybook3!2,Seller
 jdoe,jdoe@gmail.com,Password123!,Customer
 sandesh,sandesh@gmail.com,Sandesh123#,Seller
+Martha,martha@gmail.com,Password@123,Customer

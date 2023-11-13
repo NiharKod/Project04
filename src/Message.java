@@ -251,6 +251,10 @@ public class Message {
             }
         }
 
+        if (minOccurrences[0] == Integer.MAX_VALUE) {
+            minOccurrences[0] = 0;
+        }
+
         System.out.println("\nLeast common words in overall messages with " + minOccurrences[0] + " occurrences:");
         leastCommonWords.forEach(word -> System.out.println(word + ": " + minOccurrences[0] + " occurrences"));
     }
