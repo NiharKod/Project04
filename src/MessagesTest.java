@@ -8,7 +8,6 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
-
 public class MessagesTest {
 
     public static class TestCase {
@@ -35,6 +34,24 @@ public class MessagesTest {
             }
         }
 
+        @After
+        public void tearDown() {
+            // Clean up by deleting the created message history files
+            String filenameFrom = sender.getUsername() + "-" + receiver.getUsername() + ".txt";
+            String filenameTo = receiver.getUsername() + "-" + sender.getUsername() + ".txt";
+
+            File fileFrom = new File(filenameFrom);
+            File fileTo = new File(filenameTo);
+
+            if (fileFrom.exists()) {
+                fileFrom.delete();
+            }
+
+            if (fileTo.exists()) {
+                fileTo.delete();
+            }
+        }
+
         @Test
         public void testSendMessage() {
             try {
@@ -50,7 +67,6 @@ public class MessagesTest {
 
                 // Assert that the sent message is in the printed output
                 assertTrue(printedMessage.contains("Test message"));
-
 
                 // Clean up
                 System.setOut(originalOut); // Restore the original standard output
@@ -163,7 +179,6 @@ public class MessagesTest {
                 assertFalse(printedMessage.contains("banana: 2 occurrences"));
                 assertFalse(printedMessage.contains("cherry:"));
 
-
                 // Clean up
                 System.setOut(originalOut); // Restore the original standard output
             } catch (IOException e) {
@@ -199,25 +214,8 @@ public class MessagesTest {
                 fail("Exception occurred while testing displayLeastCommonWords: " + e.getMessage());
             }
         }
-
-        @After
-        public void tearDown() {
-            // Clean up by deleting the created message history files
-            String filenameFrom = sender.getUsername() + "-" + receiver.getUsername() + ".txt";
-            String filenameTo = receiver.getUsername() + "-" + sender.getUsername() + ".txt";
-
-            File fileFrom = new File(filenameFrom);
-            File fileTo = new File(filenameTo);
-
-            if (fileFrom.exists()) {
-                fileFrom.delete();
-            }
-
-            if  (fileTo.exists()) {
-                fileTo.delete();
-            }
-        }
     }
+
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(TestCase.class);
         if (result.wasSuccessful()) {
@@ -228,5 +226,4 @@ public class MessagesTest {
             }
         }
     }
-
 }
