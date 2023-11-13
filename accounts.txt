@@ -1,10 +1,4 @@
 Username,email,password,role
-niharkod,nkodkani@purdue.edu,fancybook3!2,Seller
-jdoe,jdoe@gmail.com,Password123!,Customer
-tupac,tupac@urmom,45678%,Customer
-macrosenter,macrosemter@234,dfghjk47%,Seller
-sandesh,sandesh@gmail.com,Sandesh123#,Seller
-hdsafliura,bob@gmail.com,HKB!gh,Seller
-Harold,hh@gmail.con,Password@123,Customer
-JOhnathan,john@gmail.com,Password@1,Seller
-JohnDoe,jdoe2@gmail.com,Password123!,Seller
+JohnDoe,jdoe@gmail.com,Password@123,Seller
+Bob,bbuilder@gmail.com,Password@123,Customer
+Carl,carl@gmail.com,Password@123,Seller
