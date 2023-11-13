@@ -266,8 +266,8 @@ public class Account {
 
 
     // Checks if provided account information is found in accounts.txt
-    public boolean checkFiles(int accountChoice) throws IOException {
-        File f = new File("accounts.txt");
+    public boolean checkFiles(int accountChoice, String filename) throws IOException {
+        File f = new File(filename);
         BufferedReader bfr = new BufferedReader(new FileReader(f));
         String line = bfr.readLine();
 
@@ -290,10 +290,13 @@ public class Account {
         bfr.close();
         return false;
     }
+    public boolean checkFiles(int accountChoice) throws IOException {
+        return checkFiles(accountChoice,"accounts.txt");
+    }
 
     // Creates an arrayList of all customers
-    public ArrayList<String> getCustomerList() throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader("accounts.txt"));
+    public ArrayList<String> getCustomerList(String filename) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(filename));
         String line = "";
         while ((line = br.readLine()) != null) {
             if (line.split(",")[3].equals("Customer")) {
@@ -302,6 +305,9 @@ public class Account {
         }
         br.close();
         return customers;
+    }
+    public ArrayList<String> getCustomerList() throws IOException {
+        return getCustomerList("accounts.txt");
     }
 
     //calls getCustomerList and checks for invisibility
@@ -329,8 +335,8 @@ public class Account {
     }
 
     // Creates an arrayList of all sellers
-    public ArrayList<String> getSellerList() throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader("accounts.txt"));
+    public ArrayList<String> getSellerList(String filename) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(filename));
         String line = "";
         while ((line = br.readLine()) != null) {
             if (line.split(",")[3].equals("Seller")) {
@@ -339,6 +345,10 @@ public class Account {
         }
         br.close();
         return sellers;
+    }
+
+    public ArrayList<String> getSellerList() throws IOException {
+        return getSellerList("Accounts.txt");
     }
 
     public ArrayList<String> getSellerListInvis() throws IOException {
