@@ -296,6 +296,7 @@ public class Account {
 
     // Creates an arrayList of all customers
     public ArrayList<String> getCustomerList(String filename) throws IOException {
+        customers = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(filename));
         String line = "";
         while ((line = br.readLine()) != null) {
@@ -336,6 +337,7 @@ public class Account {
 
     // Creates an arrayList of all sellers
     public ArrayList<String> getSellerList(String filename) throws IOException {
+        sellers = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(filename));
         String line = "";
         while ((line = br.readLine()) != null) {

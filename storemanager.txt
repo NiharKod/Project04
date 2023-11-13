@@ -1,3 +1,7 @@
 
 niharkod,Microcenter
+macrosenter,Macrocenter
 sandesh,ssbooks
+hdsafliura,Flhdbs
+JOhnathan,John-Mart
+JohnDoe,John's Goods
