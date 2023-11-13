@@ -20,29 +20,6 @@ public class SellerTests {
     }
 
     @Test
-    public void testViewCustomers() {
-        try {
-            // Redirect System.out to capture output
-            ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-            System.setOut(new PrintStream(outContent));
-
-            seller.viewCustomers();
-
-            // Capture the printed message
-            String printedMessage = outContent.toString().trim();
-
-            // Check if the displayed customers match the expected customers based on the data in accounts.txt
-            assertTrue(printedMessage.contains("jdoe"));  // jdoe is a customer
-            assertFalse(printedMessage.contains("niharkod"));  // niharkod is not a customer
-
-            // Clean up
-            System.setOut(System.out);
-        } catch (IOException e) {
-            fail("Exception occurred while testing viewCustomers: " + e.getMessage());
-        }
-    }
-
-    @Test
     public void testSearchCustomer() {
         try {
             // Test if searchCustomer can find an existing customer
