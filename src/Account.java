@@ -349,7 +349,6 @@ public class Account {
                 customerList.remove(cantSeeList.get(i));
             }
         }
-
         return customerList;
     }
 
