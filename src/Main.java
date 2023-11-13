@@ -26,6 +26,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
+            everything:
             do {    // Account Loop - Keeps entire program running
                 int choice = 0;    // Integer choice user gives to select from options
                 String toSearch = null;    // Username of user to send message to
@@ -69,6 +70,7 @@ public class Main {
                                 } while (true);    // Ensures valid choice
 
                                 // Customer choice
+                                customerChoice:
                                 switch (choice) {
                                     case 1:    // View Stores
                                         for (String store : user.getSellerListInvis()) {
@@ -76,6 +78,7 @@ public class Main {
                                         }
 
                                         // USER VERIFICATION
+                                        userVerificator:
                                         do {
                                             System.out.println("Please enter store name you would like to " +
                                                     "interact with: ");
@@ -92,16 +95,25 @@ public class Main {
                                                 System.out.println(USER_NOT_FOUND);
 
                                                 // Ask user if they'd like to try again? If Y continue, else quit.
-                                                System.out.println(TRY_AGAIN);
-                                                String again = input.nextLine().toUpperCase();
-                                                if (!again.equals("Y")) {
-                                                    break;
-                                                }
+                                                do {
+                                                    System.out.println(TRY_AGAIN);
+                                                    String again = input.nextLine().toUpperCase();
+
+                                                    if (again.equals("Y")) {
+                                                        System.out.println();
+                                                        break;
+                                                    } else if (again.equals("N")) {
+                                                        System.out.println();
+                                                        break customerChoice;
+                                                    } else if (!again.equals("N") || !again.equals("Y")) {
+                                                        System.out.println("Invalid Input.");
+                                                    }
+                                                } while (true);    // Try Again?
                                             } else if (foundUser) {
                                                 break roleChoices;
                                             }
                                         } while (true);    // User existence verifier
-                                        break;
+
 
                                     case 2:    // Search for Seller
                                         do {
@@ -118,15 +130,21 @@ public class Main {
 
                                             // If user isn't found, ask to try again or quit searching
                                             System.out.println(USER_NOT_FOUND);
-                                            System.out.println(TRY_AGAIN);
-                                            String again = input.nextLine().toUpperCase();
+                                            do {
+                                                System.out.println(TRY_AGAIN);
+                                                String again = input.nextLine().toUpperCase();
 
-                                            // Ask user if they'd like to try again? If Y continue, else quit.
-                                            if (!again.equals("Y")) {
-                                                break;
-                                            }
+                                                if (again.equals("Y")) {
+                                                    System.out.println();
+                                                    break;
+                                                } else if (again.equals("N")) {
+                                                    System.out.println();
+                                                    break customerChoice;
+                                                } else if (!again.equals("N") || !again.equals("Y")) {
+                                                    System.out.println("Invalid Input.");
+                                                }
+                                            } while (true);    // Try Again?
                                         } while (true);    // Ensures valid user or cancel
-                                        break;
 
                                     case 3:// View Statistics
                                         System.out.println(SEARCH_USERNAME);
@@ -167,6 +185,7 @@ public class Main {
                                 } while (true);    // Ensures valid choice
 
                                 // Seller choice
+                                sellerChoices:
                                 switch (choice) {
                                     case 1:    // View Customers and selection
                                         for (String customer : user.getCustomerListInvis()) {
@@ -187,16 +206,24 @@ public class Main {
                                                 System.out.println(USER_NOT_FOUND);
 
                                                 // Ask user if they'd like to try again? If Y continue, else quit.
-                                                System.out.println(TRY_AGAIN);
-                                                String again = input.nextLine().toUpperCase();
-                                                if (!again.equals("Y")) {
-                                                    break;
-                                                }
+                                                do {
+                                                    System.out.println(TRY_AGAIN);
+                                                    String again = input.nextLine().toUpperCase();
+
+                                                    if (again.equals("Y")) {
+                                                        System.out.println();
+                                                        break;
+                                                    } else if (again.equals("N")) {
+                                                        System.out.println();
+                                                        break sellerChoices;
+                                                    } else if (!again.equals("N") || !again.equals("Y")) {
+                                                        System.out.println("Invalid Input.");
+                                                    }
+                                                } while (true);    // Try Again?
                                             } else if (foundUser) {
                                                 break roleChoices;
                                             }
                                         } while (true);     // User existence verifier
-                                        break;
 
                                     case 2:    // Search for Customer
                                         do {
@@ -214,17 +241,21 @@ public class Main {
 
                                             // If user isn't found, ask to try again or quit searching
                                             System.out.println(USER_NOT_FOUND);
-                                            System.out.println(TRY_AGAIN);
-                                            String again = input.nextLine().toUpperCase();
+                                            do {
+                                                System.out.println(TRY_AGAIN);
+                                                String again = input.nextLine().toUpperCase();
 
-
-
-                                            // Ask user if they'd like to try again? If Y continue, else quit.
-                                            if (!again.equals("Y")) {
-                                                break;
-                                            }
+                                                if (again.equals("Y")) {
+                                                    System.out.println();
+                                                    break;
+                                                } else if (again.equals("N")) {
+                                                    System.out.println();
+                                                    break sellerChoices;
+                                                } else if (!again.equals("N") || !again.equals("Y")) {
+                                                    System.out.println("Invalid Input.");
+                                                }
+                                            } while (true);    // Try Again?
                                         } while (true);    // Ensures valid user or cancel
-                                        break;
 
                                     case 3:// View Statistics
 
@@ -250,11 +281,20 @@ public class Main {
                                                 System.out.println("Store name already taken, try a new name!");
 
                                                 // Ask user if they'd like to try again? If Y continue, else quit.
-                                                System.out.println(TRY_AGAIN);
-                                                String again = input.nextLine().toUpperCase();
-                                                if (!again.equals("Y")) {
-                                                    break;
-                                                }
+                                                do {
+                                                    System.out.println(TRY_AGAIN);
+                                                    String again = input.nextLine().toUpperCase();
+
+                                                    if (again.equals("Y")) {
+                                                        System.out.println();
+                                                        break;
+                                                    } else if (again.equals("N")) {
+                                                        System.out.println();
+                                                        break sellerChoices;
+                                                    } else if (!again.equals("N") || !again.equals("Y")) {
+                                                        System.out.println("Invalid Input.");
+                                                    }
+                                                } while (true);    // Try Again?
                                             }
                                         } while (true);
                                         break;
@@ -270,6 +310,7 @@ public class Main {
                         while (true) {    // Loops through and asks about messaging, blocking, and invisibilty options
                             // Messaging, Blocking, and Invisibility Options
                             do {
+                                System.out.println("Interacting with: " + toSearch);
                                 System.out.println(MESSAGING_AND_BLOCKING_CHOICES);
 
                                 // Saves input and checks if it is a valid integer input
@@ -301,11 +342,8 @@ public class Main {
                                     break;
 
                                 case 2:    // Block
-                                    System.out.println("Select a user to block: ");
-                                    String userToBlock = input.nextLine();
-
-                                    user.writeBlockedByList(userToBlock);
-                                    System.out.println("You have blocked user " + userToBlock + "!");
+                                    user.writeBlockedByList(toSearch);
+                                    System.out.println("You have blocked user " + toSearch + "!");
                                     break;
 
                                 case 3:    // Edit
@@ -349,14 +387,21 @@ public class Main {
                 }
 
                 // Close program entirely?
-                System.out.println("Would you like to close the program? [Y] or [N]: ");
-                String again = input.nextLine().toUpperCase();
+                do {
+                    System.out.println("Would you like to close the program? [Y] or [N]: ");
+                    String again = input.nextLine().toUpperCase();
 
-                // Ask user if they'd like to close the program? If N continue, else quit.
-                if (!again.equals("N")) {
-                    System.out.println("Closing.");
-                    break;
-                }
+                    // Ask user if they'd like to close the program? If N continue, else quit.
+                    if (again.equals("Y")) {
+                        System.out.println("Closing...");
+                        break everything;
+                    } else if (again.equals("N")) {
+                        System.out.println();
+                        break;
+                    } else if (!again.equals("N") || !again.equals("Y")) {
+                        System.out.println("Invalid Input.");
+                    }
+                } while (true);    // Close Program Loop?
 
             } while (true);    // Account Loop
         } catch (IOException e) {

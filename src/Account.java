@@ -86,6 +86,7 @@ public class Account {
         Scanner scan = new Scanner(System.in);
         int accountChoice;
 
+
         do {    // Gets user's choice to log in to a pre-existing account or create a new account
             System.out.println("Log-In [1] or Create New Account [2]?");
             String repsonse = scan.nextLine();
@@ -110,6 +111,7 @@ public class Account {
         if (accountChoice == 1) {    // Login to Pre-Existing Account
             System.out.println("LOG-IN:");
 
+            loginLoop:
             do {
                 do {    // Validate Email
                     System.out.println("Please Enter your Email:");
@@ -138,15 +140,22 @@ public class Account {
                 accountFound = checkFiles(accountChoice);
                 if (!accountFound) {    // Account not found
                     System.out.println("Incorrect credentials!");
-                    System.out.println("Would you like to try again? [Y] or [N]:");
-                    String again = scan.nextLine().toUpperCase();
+                    do {
+                        System.out.println("Would you like to try again? [Y] or [N]:");
+                        String again = scan.nextLine().toUpperCase();
 
-                    // Ask user if they'd like to try logging in again? If Y continue, else quit and return null.
-                    if (!again.equals("Y")) {
-                        System.out.println("Thank you!");
-                        return account;
-                    }
+                        // Ask user if they'd like to try logging in again? If Y continue, else quit and return null.
+                        if (again.equals("Y")) {
+                            System.out.println();
+                            break;
+                        } else if (again.equals("N")) {
+                            System.out.println();
+                            break loginLoop;
+                        } else if (!again.equals("N") || !again.equals("Y")) {
+                            System.out.println("Invalid Input.");
+                        }
 
+                    } while (true);    // Try Again?
                 } else {    // Account found
                     System.out.println("Welcome back, " + getRole() + " " + getUsername() + "!\n");
                 }
@@ -155,6 +164,7 @@ public class Account {
         } else if (accountChoice == 2) {    // Create New Account
             System.out.println("CREATE ACCOUNT:");
 
+            newAccountLoop:
             do {
                 do {    // Validate Username
                     System.out.println("Please Create a Username:");
@@ -181,12 +191,13 @@ public class Account {
 
                 do {    // Validate Password
                     System.out.println("Please Enter your Password (Must be 6 characters and" +
-                            " have 1 special character [!,@,#,$,%]):");
+                            " have 1 special character [!,@,#,$,%,?]):");
                     setPassword(scan.nextLine());
 
-                    if ((!getPassword().contains(",") && !getPassword().contains(" ") && (getPassword().length() >= 6)) &&
-                            (getPassword().contains("!") || getPassword().contains("@") || getPassword().contains("#")
-                                    || getPassword().contains("$") || getPassword().contains("%"))) {
+                    if ((!getPassword().contains(",") && !getPassword().contains(" ") && (getPassword().length() >= 6))
+                            && (getPassword().contains("!") || getPassword().contains("@") ||
+                            getPassword().contains("#") || getPassword().contains("$") || getPassword().contains("%"))
+                            || getPassword().contains("?")) {
                         break;
                     } else {
                         System.out.println("Please enter a valid password!");
@@ -215,14 +226,21 @@ public class Account {
                 accountFound = checkFiles(accountChoice);
                 if (accountFound) {    // Account already exists
                     System.out.println("Email or username already in use!");
-                    System.out.println("Would you like to try again? [Y] or [N]:");
-                    String again = scan.nextLine().toUpperCase();
+                    do {
+                        System.out.println("Would you like to try again? [Y] or [N]:");
+                        String again = scan.nextLine().toUpperCase();
 
-                    // Ask user if they'd like to try creating account again? If Y continue, else quit and return null.
-                    if (!again.equals("Y")) {
-                        System.out.println("Thank you!");
-                        return account;
-                    }
+                        // Ask user if they'd like to try creating account again? If Y continue, else quit and return null.
+                        if (again.equals("Y")) {
+                            System.out.println();
+                            break;
+                        } else if (again.equals("N")) {
+                            System.out.println();
+                            break newAccountLoop;
+                        } else if (!again.equals("N") || !again.equals("Y")) {
+                            System.out.println("Invalid Input.");
+                        }
+                    } while (true);
                 } else {    // Account doesn't already exist
                     System.out.println("Account created for " + getUsername() + "!\n");
                 }
@@ -296,6 +314,7 @@ public class Account {
 
     // Creates an arrayList of all customers
     public ArrayList<String> getCustomerList(String filename) throws IOException {
+        customers = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(filename));
         String line = "";
         while ((line = br.readLine()) != null) {
@@ -336,6 +355,7 @@ public class Account {
 
     // Creates an arrayList of all sellers
     public ArrayList<String> getSellerList(String filename) throws IOException {
+        sellers = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(filename));
         String line = "";
         while ((line = br.readLine()) != null) {
