@@ -4,13 +4,17 @@ import org.junit.AfterClass;
 import org.junit.Test;
 import java.io.*;
 import static org.junit.Assert.*;
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
 
 public class MessagesTest {
-
     private Account sender;
     private Account receiver;
     private Message message;
     private PrintStream originalOut; // Declare the original standard output stream
+    private static boolean allTestsPassed = false; // Track whether all tests have passed
 
     @Before
     public void setUp() {
@@ -44,6 +48,7 @@ public class MessagesTest {
 
             // Assert that the sent message is in the printed output
             assertTrue(printedMessage.contains("Test message"));
+
 
             // Clean up
             System.setOut(originalOut); // Restore the original standard output
@@ -96,10 +101,12 @@ public class MessagesTest {
 
             // Assert that the message is deleted
             assertFalse(printedMessage.contains("Test message"));
+            allTestsPassed = true;
 
             // Clean up
             System.setOut(originalOut); // Restore the original standard output
         } catch (IOException e) {
+            allTestsPassed = false; // Set the variable to false if this test fails
             fail("Exception occurred while testing deleteMessage: " + e.getMessage());
         }
     }
@@ -154,6 +161,7 @@ public class MessagesTest {
             assertFalse(printedMessage.contains("banana: 2 occurrences"));
             assertFalse(printedMessage.contains("cherry:"));
 
+
             // Clean up
             System.setOut(originalOut); // Restore the original standard output
         } catch (IOException e) {
@@ -203,13 +211,9 @@ public class MessagesTest {
             fileFrom.delete();
         }
 
-        if (fileTo.exists()) {
+        if  (fileTo.exists()) {
             fileTo.delete();
         }
     }
 
-    @AfterClass
-    public static void printResult() {
-        System.out.println("Excellent! All tests ran successfully.");
-    }
 }

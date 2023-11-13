@@ -90,8 +90,4 @@ public class AccountTests {
         testFile.delete();
     }
 
-    @AfterClass
-    public static void printResult() {
-        System.out.println("Excellent! Tests ran successfully.");
-    }
 }

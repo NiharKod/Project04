@@ -21,6 +21,10 @@ public class Customer extends Account {
     private List<String> roles; // List to store roles
     private List<String> storeNames; // List to store store names
 
+    public String getAssignedSeller() {
+        return assignedSeller;
+    }
+
     public Customer(String username, String email, String password, String role) {
         super(username, email, password, role);
         this.usernames = new ArrayList<>(); // Initialize the usernames list
