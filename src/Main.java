@@ -342,11 +342,8 @@ public class Main {
                                     break;
 
                                 case 2:    // Block
-                                    System.out.println("Select a user to block: ");
-                                    String userToBlock = input.nextLine();
-
-                                    user.writeBlockedByList(userToBlock);
-                                    System.out.println("You have blocked user " + userToBlock + "!");
+                                    user.writeBlockedByList(toSearch);
+                                    System.out.println("You have blocked user " + toSearch + "!");
                                     break;
 
                                 case 3:    // Edit

@@ -1,4 +1,1 @@
 Username,email,password,role
-JohnDoe,jdoe@gmail.com,Password@123,Seller
-Bob,bbuilder@gmail.com,Password@123,Customer
-Carl,carl@gmail.com,Password@123,Seller
