@@ -177,7 +177,8 @@ public class Message {
         pwFrom.close();
         brFrom.close();
     }
-// Below are all the methods for statistics
+
+    // Below are all the methods for statistics
 // Statistics have been written in messages to make it easy for testcasing it
     public void displayMostCommonWords() throws IOException {
         List<String> messages = new ArrayList<>();
@@ -215,7 +216,6 @@ public class Message {
         System.out.println("\nMost common words in overall messages with " + maxOccurrences[0] + " occurrences:");
         mostCommonWords.forEach(word -> System.out.println(word + ": " + maxOccurrences[0] + " occurrences"));
     }
-
 
 
     public void displayLeastCommonWords() throws IOException {
@@ -260,11 +260,10 @@ public class Message {
     }
 
 
-
     private static String extractCustomerFromMessage(String message) {
         // Assuming the format is (Role)Username: Message
         int count = message.trim().indexOf(':');
-        String concatMessages = message.substring(count+1).trim();
+        String concatMessages = message.substring(count + 1).trim();
         //   return concatMessages.split("\\)")[1].split(":")[0];
         return concatMessages.split("\\)")[0];
     }

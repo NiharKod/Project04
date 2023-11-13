@@ -10,6 +10,14 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * CustomerTests class
+ *
+ * <p>Purdue University -- CS18000 -- Fall 2023 -- Project 04 -- </p>
+ *
+ * @author Nihar Kodkani, Nangba Konyak, Isabelle Lee, Sandesh Reddy
+ * @version November 12th, 2023
+ */
 public class CustomerTests {
     public static class TestCase {
         // Create a test customer account
@@ -61,6 +69,7 @@ public class CustomerTests {
             return data.toString();
         }
     }
+
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(CustomerTests.TestCase.class);
         if (result.wasSuccessful()) {

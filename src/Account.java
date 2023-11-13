@@ -308,8 +308,9 @@ public class Account {
         bfr.close();
         return false;
     }
+
     public boolean checkFiles(int accountChoice) throws IOException {
-        return checkFiles(accountChoice,"accounts.txt");
+        return checkFiles(accountChoice, "accounts.txt");
     }
 
     // Creates an arrayList of all customers
@@ -325,6 +326,7 @@ public class Account {
         br.close();
         return customers;
     }
+
     public ArrayList<String> getCustomerList() throws IOException {
         return getCustomerList("accounts.txt");
     }

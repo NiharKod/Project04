@@ -1,4 +1,5 @@
 import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -9,6 +10,14 @@ import org.junit.runner.notification.Failure;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * AccountTests class
+ *
+ * <p>Purdue University -- CS18000 -- Fall 2023 -- Project 04 -- </p>
+ *
+ * @author Nihar Kodkani, Nangba Konyak, Isabelle Lee, Sandesh Reddy
+ * @version November 12th, 2023
+ */
 public class AccountTests {
     public static class TestCase {
         private Account account;
@@ -49,7 +58,7 @@ public class AccountTests {
             writer.close();
 
             // Check if the test account is found in the test file
-            assertTrue(account.checkFiles(1,"test_accounts.txt"));
+            assertTrue(account.checkFiles(1, "test_accounts.txt"));
 
             // Clean up the test file
             testFile.delete();
@@ -95,6 +104,7 @@ public class AccountTests {
             testFile.delete();
         }
     }
+
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(AccountTests.TestCase.class);
         if (result.wasSuccessful()) {

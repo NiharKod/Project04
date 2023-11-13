@@ -2,12 +2,23 @@ import org.junit.Before;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
+
 import java.io.*;
+
 import static org.junit.Assert.*;
+
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
+/**
+ * MessagesTest class
+ *
+ * <p>Purdue University -- CS18000 -- Fall 2023 -- Project 04 -- </p>
+ *
+ * @author Nihar Kodkani, Nangba Konyak, Isabelle Lee, Sandesh Reddy
+ * @version November 12th, 2023
+ */
 public class MessagesTest {
 
     public static class TestCase {
@@ -105,7 +116,6 @@ public class MessagesTest {
                 fail("Exception occurred while testing editMessage: " + e.getMessage());
             }
         }
-
 
 
         @Test

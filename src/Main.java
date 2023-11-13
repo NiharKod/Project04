@@ -12,12 +12,11 @@ import java.util.Scanner;
  * @author Nihar Kodkani, Nangba Konyak, Isabelle Lee, Sandesh Reddy
  * @version November 12th, 2023
  */
-
 public class Main {
     private static String CUSTOMER_CHOICES = "View Stores List [1], Search for a Seller [2], View Statistics [3]," +
             " or Cancel [0]?";
-    private static String SELLER_CHOICES = "View Customers List [1], Search for a Customer [2], View Statistics [3], " +
-            "Create Store [4], or Cancel [0]?";
+    private static String SELLER_CHOICES = "View Customers List [1], Search for a Customer [2], View Statistics [3],"
+            + " Create Store [4], or Cancel [0]?";
     private static String INVALID_NUMBER_OPTION = "Invalid Input, please enter valid option!\n";
     private static String SEARCH_USERNAME = "Please enter a username. Remember that all names are case-sensitive.";
     private static String USER_NOT_FOUND = "The username you entered doesn't exist.";
@@ -368,7 +367,7 @@ public class Main {
 
                             // MESSAGING, BLOCKING, AND INVISIBILITY
                             messagingChoices:
-                            while (true) {    // Loops through and asks about messaging, blocking, and invisibilty options
+                            while (true) {    // Loops through and lists messaging, blocking, and invisibilty options
                                 // Messaging, Blocking, and Invisibility Options
                                 do {
                                     System.out.println("Interacting with: " + toSearch);
@@ -410,8 +409,8 @@ public class Main {
                                         message.printMessageHistoryWithIndeces();
                                         int lineToEdit;
 
-                                        BufferedReader brFromEd = new BufferedReader(new FileReader(user.getUsername() + "-"
-                                                + toSearch + ".txt"));
+                                        BufferedReader brFromEd = new BufferedReader(new FileReader(
+                                                user.getUsername() + "-" + toSearch + ".txt"));
                                         //read every line into an array list. delete line.
                                         ArrayList<String> messagesEd = new ArrayList<>();
                                         String lineEd;
@@ -465,8 +464,8 @@ public class Main {
                                         message.printMessageHistoryWithIndeces();
                                         int lineToDelete;
 
-                                        BufferedReader brFromDel = new BufferedReader(new FileReader(user.getUsername() + "-"
-                                                + toSearch + ".txt"));
+                                        BufferedReader brFromDel = new BufferedReader(new FileReader(
+                                                user.getUsername() + "-" + toSearch + ".txt"));
                                         //read every line into an array list. delete line.
                                         ArrayList<String> messagesDel = new ArrayList<>();
                                         String lineDel;
@@ -563,7 +562,8 @@ public class Main {
             String response = "";
             Scanner input = new Scanner(System.in);
             do {
-                System.out.println("Select Get Chat History [1], Get most common word occurrences [2], Get least common word occurrences [3], cancel [0] ");
+                System.out.println("Select Get Chat History [1], Get most common word occurrences [2], Get least " +
+                        "common word occurrences [3], cancel [0] ");
 
                 // Saves input and checks if it is a valid integer input
                 response = input.nextLine();
