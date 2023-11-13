@@ -26,6 +26,7 @@ public class SellerTests {
         @Test
         public void testSearchCustomer() {
             try {
+                System.out.println("Running Test Cases...");
                 // Test if searchCustomer can find an existing customer
                 assertTrue(seller.searchCustomer("jdoe"));
 

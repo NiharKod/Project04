@@ -78,6 +78,7 @@ public class MessagesTest {
         @Test
         public void testEditMessage() {
             try {
+                System.out.println("Running Test Cases...");
                 // Send a message
                 message.sendMessage("Original message");
 

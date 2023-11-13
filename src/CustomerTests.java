@@ -23,6 +23,7 @@ public class CustomerTests {
         @Test
         public void testSearchSeller() {
             try {
+                System.out.println("Running Test Cases...");
                 // Search for an existing seller
                 boolean result = customer.searchSeller("niharkod");
                 assertTrue(result);

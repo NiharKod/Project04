@@ -20,6 +20,7 @@ public class AccountTests {
 
         @Test
         public void testGetters() {
+            System.out.println("Running Test Cases...");
             assertEquals("jdoe", account.getUsername());
             assertEquals("test@example.com", account.getEmail());
             assertEquals("testPassword", account.getPassword());
