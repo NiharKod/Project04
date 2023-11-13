@@ -82,7 +82,7 @@ public class Message {
 
     public void editMessage(int lineIndex, String updatedMessage) throws IOException {
         String originalMessage = "";
-        //read in the from message.
+        //read in the "from" message.
         BufferedReader brFrom = new BufferedReader(new FileReader(from.getUsername() + "-"
                 + this.to.getUsername() + ".txt"));
 
