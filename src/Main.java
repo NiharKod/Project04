@@ -128,8 +128,12 @@ public class Main {
                                         } while (true);    // Ensures valid user or cancel
                                         break;
 
-                                    case 3:    // View Statistics
-                                        // TODO: IMPLEMENT CUSTOMER SIDE STATISTICS
+                                    case 3:// View Statistics
+                                        System.out.println(SEARCH_USERNAME);
+                                        toSearch = input.nextLine();
+
+                                        System.out.println("Printing out statistics");
+                                        getStats(user, toSearch);
 
                                         break;
 
